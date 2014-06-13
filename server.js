@@ -38,7 +38,7 @@ app.use(methodOverride());                  // simulate DELETE and PUT
 
 // authentication and routes
 require('./app/routes/authentication.js')(app, passport); // authentication
-require('./app/routes.js')(app); // routes
+require('./app/routes/routes.js')(app); // routes
 
 // start app
 app.listen(port);
