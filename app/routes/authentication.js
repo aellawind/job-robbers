@@ -1,8 +1,6 @@
 var AsanaStrategy = require('passport-asana').OAuth2Strategy;
 var config        = require('../../config/asanaKeys.js'); 
 
-var updateUser = function (req, )
-
 var Authentication = function (app, passport) {
 
   /* === PASSPORT CONFIGS === */
