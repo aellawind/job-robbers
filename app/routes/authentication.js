@@ -2,6 +2,8 @@ var AsanaStrategy = require('passport-asana').OAuth2Strategy;
 var config        = require('../../config/asanaKeys.js'); 
 
 var Authentication = function (app, passport) {
+
+  /* === PASSPORT CONFIGS === */
   passport.serializeUser(function (user, done) {
     done(null, user.id);
   });
@@ -22,6 +24,21 @@ var Authentication = function (app, passport) {
         !req.user ? updateUser(profile, token, done) : linkUser(profile, token, done);
       });
   }));
+
+  // ======================================================
+  // =====================ROUTES===========================
+  // ======================================================
+
+  app.get('/auth/asana', 
+    passport.authenticate('Asana'));
+
+  app.get('/auth/asana/callback',
+    passport.authenticate('Asana', { failureRedirect: '/login' }),
+    function (req, res) {
+      console.log('Successfully logged in. Redirecting user.');
+      res.redirect('/');
+    });
+
 };
 
 
