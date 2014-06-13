@@ -37,8 +37,7 @@ app.use(flash());                           // use connect-flash for flash messa
 app.use(methodOverride());                  // simulate DELETE and PUT
 
 // authentication and routes
-require('./app/authentication.js')(app, passport); // authentication
-require('./app/mailGun.js')(app); // mailGun
+require('./app/routes/authentication.js')(app, passport); // authentication
 require('./app/routes.js')(app); // routes
 
 // start app
