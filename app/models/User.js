@@ -1,8 +1,9 @@
 var mongoose = require ('mongoose');
 
 var userSchema = mongoose.Schema({
-  asana : {
-    id    : String,
+  _id     : String,
+  asana   : {
+    token : String,
     name  : String,
     email : String
   }
