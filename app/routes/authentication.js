@@ -24,7 +24,7 @@ var updateUser = function (profile, token, done) {
 
     if (user) {
       // if there is a user id already but no token (user was linked at one point and then removed)
-      if (!user.google.token) {
+      if (!user.asana.token) {
           user._id         = profile.id;
           user.asana.token = token;
           user.asana.name  = profile.displayName;
@@ -33,29 +33,27 @@ var updateUser = function (profile, token, done) {
           user.save();
           return done(null, user);
       } else {
-        console.log(user.google.name, ' is already logged in.');
+        console.log(user.asana.name, ' is already logged in.');
         return done(null, user);          
       }
     } else {
       createUser(profile, token, done);
     }
   });
-
 };
 
 var linkUser = function (profile, token, done) {
-     // user already exists and is logged in, we have to link accounts
-    var user = req.user; // pull the user out of the session
+   // user already exists and is logged in, we have to link accounts
+  var user = req.user; // pull the user out of the session
+  user.asana.token = token;
+  user.asana.name  = profile.displayName;
+  user.asana.email = profileEmail || ''; // pull the first email
 
-    user.google.token = token;
-    user.google.name  = profile.displayName;
-    user.google.email = profileEmail || ''; // pull the first email
-
-    user.save(function(err) {
-        if (err)
-            throw err;
-        return done(null, user);
-    });   
+  user.save(function(err) {
+    if (err)
+        throw err;
+    return done(null, user);
+  });   
 };
 
 
@@ -66,9 +64,9 @@ var Authentication = function (app, passport) {
     done(null, user.id);
   });
 
-  passport.deserializeUser(function (err, user) {
+  passport.deserializeUser(function (id, done) {
     User.findById(id, function (err, user) {
-      done(null, user.id);
+      done(null, user);
     });
   });
 
@@ -98,6 +96,17 @@ var Authentication = function (app, passport) {
       res.redirect('/');
     }
   );
+
+  app.get('/unlink/asana/:id', function(req, res) {
+    User.findOne({ _id: req.params.id }, function (err, user) {
+      user.asana.token = undefined;
+      user.save(function(err) {
+        console.log(user, ' has been successfully logged out.');
+        res.send(200);
+      });
+    })
+    req.logout();
+});
 
 };
 
