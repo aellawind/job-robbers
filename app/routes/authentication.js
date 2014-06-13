@@ -1,6 +1,8 @@
 var AsanaStrategy = require('passport-asana').OAuth2Strategy;
 var config        = require('../../config/asanaKeys.js'); 
 
+var updateUser = function (req, )
+
 var Authentication = function (app, passport) {
 
   /* === PASSPORT CONFIGS === */
@@ -20,9 +22,12 @@ var Authentication = function (app, passport) {
     callbackURL       : config.asanaAuth.callbackURL,
     passReqToCallBack : true
   }, function (req, token, refreshToken, profile, done) {
-      process.nextTick(function () {
-        !req.user ? updateUser(profile, token, done) : linkUser(profile, token, done);
+      User.findOrCreate({ userId: profile.id }, function (err, user) {
+        return done(err, user);
       });
+      // process.nextTick(function () {
+      //   !req.user ? updateUser(profile, token, done) : linkUser(profile, token, done);
+      // });
   }));
 
   // ======================================================
@@ -37,7 +42,8 @@ var Authentication = function (app, passport) {
     function (req, res) {
       console.log('Successfully logged in. Redirecting user.');
       res.redirect('/');
-    });
+    }
+  );
 
 };
 
