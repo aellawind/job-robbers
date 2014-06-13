@@ -1,27 +1,47 @@
-// modules =================================================
+/* ==== MODULES ==== */
 var express = require('express');
-var app     = express();
-var mongoose= require('mongoose');
+var app = express();
+var methodOverride = require('method-override');
+var bodyParser = require('body-parser');
+var morgan = require('morgan');
 
-// configuration ===========================================
-	
-// config files
-var db = require('./config/db');
+var mongoose = require('mongoose');
 
-var port = process.env.PORT || 8080; // set our port
-// mongoose.connect(db.url); // connect to our mongoDB database (commented out after you enter in your own credentials)
+var passport = require('passport');
+var flash = require('connect-flash');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
 
-app.configure(function() {
-	app.use(express.static(__dirname + '/public')); 	// set the static files location /public/img will be /img for users
-	app.use(express.logger('dev')); 					// log every request to the console
-	app.use(express.bodyParser()); 						// pull information from html in POST
-	app.use(express.methodOverride()); 					// simulate DELETE and PUT
-});
+/* ==== CONFIG ==== */
+var db = require('./config/db.js');
+var port = process.env.PORT || 8080;
 
-// routes ==================================================
-require('./app/routes')(app); // pass our application into our routes
+mongoose.connect(db.url);
+mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
+mongoose.connection.once('open', function() { console.log("Mongo DB connected!"); });
 
-// start app ===============================================
-app.listen(port);	
-console.log('Magic happens on port ' + port); 			// shoutout to the user
-exports = module.exports = app; 						// expose app
+/* ==== STATIC SERVING ==== */
+app.use(express.static(__dirname + '/public'));     // set the static files location /public/img will be /img for users
+
+/* ==== AUTHENTICATION ==== */
+// set up our express application
+app.use(morgan('dev'));                     // log every request to the console
+app.use(cookieParser());                    // read cookies (needed for auth)
+app.use(bodyParser());                      // get information from html forms
+
+app.use(session({ secret: 'houseApp' }));   // session secret
+app.use(passport.initialize());
+app.use(passport.session());                // persistent login sessions
+app.use(flash());                           // use connect-flash for flash messages stored in session
+
+app.use(methodOverride());                  // simulate DELETE and PUT
+
+// authentication and routes
+require('./app/authentication.js')(app, passport); // authentication
+require('./app/mailGun.js')(app); // mailGun
+require('./app/routes.js')(app); // routes
+
+// start app
+app.listen(port);
+console.log('Houseclip started on port ' + port);
+exports = module.exports = app;
