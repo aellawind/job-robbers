@@ -24,7 +24,6 @@ var Authentication = function (app, passport) {
     passReqToCallBack : true
   }, function (req, token, refreshToken, profile, done) {
       process.nextTick(function () {
-        console.log(profile, 'profile');
         !req.user ? authUtils.updateUser(profile, token, done) : authUtils.linkUser(profile, token, done);
       });
   }));
@@ -57,5 +56,12 @@ var Authentication = function (app, passport) {
 
 };
 
+Authentication.check = function (req, res, next) {
+    if (req.isAuthenticated()) {
+        next();
+    } else {
+        res.redirect('/');
+    }
+};
 
 module.exports = Authentication;

@@ -1,23 +1,29 @@
-angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
 
-	$routeProvider
+	$routeProvider.when('/', {
+		templateUrl: 'views/home.html',
+		controller: 'HomeController'
+	})
 
-		// home page
-		.when('/', {
-			templateUrl: 'views/home.html',
-			controller: 'MainController'
-		})
+	.when('/home/:id', {
+		templateUrl: 'views/listings.html',
+		controller: 'ListingsController',
+		resolve: {
+			app: function ($route, User) {
+				return User.fetch($route.current.params.id);
+			}
+		}
+	})
 
-		.when('/nerds', {
-			templateUrl: 'views/nerd.html',
-			controller: 'NerdController'
-		})
+	.when('/groups', {
+		templateUrl: 'views/groups.html',
+		controller: 'GroupsController'
+	})
 
-		.when('/geeks', {
-			templateUrl: 'views/geek.html',
-			controller: 'GeekController'	
-		});
+	.when('/listings', {
+		templateUrl: 'views/listings.html',
+		controller: 'ListingsController'
+	});
 
 	$locationProvider.html5Mode(true);
-
 }]);
