@@ -43,5 +43,5 @@ require('./app/routes/routes.js')(app); // routes
 
 // start app
 app.listen(port);
-console.log('Houseclip started on port ' + port);
+console.log('JobRobber 8] started on port ' + port);
 exports = module.exports = app;
