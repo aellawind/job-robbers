@@ -8,7 +8,7 @@ app.factory('Students', function ($http, $location) {
         });
     },
 
-    fetchProjects: function () {
+    fetchProjects: function ($) {
       return $http.get('/users')
         .success(function () {
           console.log('yes!');
