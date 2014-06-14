@@ -1,7 +1,7 @@
 var request         = require('request');
 var Authentication  = require('./authentication.js');
 var User            = require('../models/User.js');
-var asanUtils       = require('../utils/asanaUtils.js')
+var asanaUtils       = require('../utils/asanaUtils.js')
 
 var asanaURL        = 'https://app.asana.com/api/1.0';
 var options         = {};
@@ -19,18 +19,22 @@ module.exports = function (app) {
       };
 
       request(options, function (err, response, body) {
-        body = JSON.parse(body);
-        body.data.forEach(function (project) {
-          if (project.name === 'Amira Anuar') {
-            // do step 2 of gif stuff to say you're fetching data
-            console.log(project, project.id);
-            options.url = asanaURL + '/projects/' + project.id + '/tasks';
-            request(options, function (err, response, body) {
-              console.log(JSON.parse(body));
-            });
-          }
-        });        
+        return asanaUtils.fetchProject(err, response, body, options, user);
       });
+
+      // request(options, function (err, response, body) {
+      //   body = JSON.parse(body);
+      //   body.data.forEach(function (project) {
+      //     if (project.name === 'Amira Anuar') {
+      //       // do step 2 of gif stuff to say you're fetching data
+      //       console.log(project, project.id);
+      //       options.url = asanaURL + '/projects/' + project.id + '/tasks';
+      //       request(options, function (err, response, body) {
+      //         console.log(JSON.parse(body));
+      //       });
+      //     }
+      //   });        
+      // });
     });
   });
 

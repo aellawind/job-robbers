@@ -1,3 +1,6 @@
+var request = require('request');
+
+var asanaURL        = 'https://app.asana.com/api/1.0';
 
 var fetchTasks = function (err, response, body) {
   console.log(JSON.parse(body));
