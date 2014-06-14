@@ -9,15 +9,7 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
 
 	.when('/student/:id', {
 		templateUrl: 'views/student.html',
-		controller: 'StudentController',
-		resolve: {
-			data: function (Students) {
-				return Students.fetchProjects()
-					.then(function (d) {
-						return d.data;
-					});
-			}
-		}
+		controller: 'StudentController'
 	})
 
 

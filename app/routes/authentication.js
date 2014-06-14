@@ -34,17 +34,11 @@ var Authentication = function (app, passport) {
   app.get('/auth/asana', 
     passport.authenticate('Asana'));
 
-  // app.get('/auth/asana', function (req, res) {
-  //   res.redirect(config.asanaAuth.login);
-  // })
-
-
   app.get('/auth/asana/callback',
     passport.authenticate('Asana', { failureRedirect: '/login' }),
     function (req, res) {
       console.log('Successfully logged in. Redirecting user.');
-      // res.redirect('/student/' + req.user._id);
-      res.redirect('/');
+      res.redirect('/student/' + req.user._id);
     }
   );
 
