@@ -7,6 +7,6 @@ app.factory('Dashboard', function ($http) {
           console.log('yes!');
         });
     }
-  };
+  }
 
 });

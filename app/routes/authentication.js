@@ -1,20 +1,19 @@
 var AsanaStrategy = require('passport-asana').Strategy;
 var config        = require('../../config/asanaKeys.js');
-var authUtils     = require('../utils/authUtils.js'); 
+var authUtils     = require('../utils/authUtils.js');
+var request       = require('request');
 
 var User = require('../models/User.js');
 
 var Authentication = function (app, passport) {
 
   /* === PASSPORT CONFIGS === */
-  passport.serializeUser(function (user, done) {
-    done(null, user.id);
+  passport.serializeUser(function(user, done) {
+    done(null, user);
   });
 
-  passport.deserializeUser(function (id, done) {
-    User.findById(id, function (err, user) {
-      done(null, user);
-    });
+  passport.deserializeUser(function(obj, done) {
+    done(null, obj);
   });
 
   passport.use(new AsanaStrategy({
@@ -24,7 +23,7 @@ var Authentication = function (app, passport) {
     passReqToCallBack : true
   }, function (req, token, refreshToken, profile, done) {
       process.nextTick(function () {
-        !req.user ? authUtils.updateUser(profile, token, done) : authUtils.linkUser(profile, token, done);
+        !req.user ? authUtils.updateUser(profile, refreshToken.access_token, done) : authUtils.linkUser(profile, refreshToken.access_token, done);
       });
   }));
 
@@ -39,12 +38,12 @@ var Authentication = function (app, passport) {
     passport.authenticate('Asana', { failureRedirect: '/login' }),
     function (req, res) {
       console.log('Successfully logged in. Redirecting user.');
-      res.redirect('/');
+      res.redirect('/student/' + req.user._id);
     }
   );
 
-  app.get('/unlink/asana/:id', function(req, res) {
-    User.findOne({ _id: req.params.id }, function (err, user) {
+  app.get('/unlink/asana', function(req, res) {
+    User.findOne({ _id: req.user._id }, function (err, user) {
       user.asana.token = undefined;
       user.save(function(err) {
         console.log(user, ' has been successfully logged out.');
