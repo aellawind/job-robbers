@@ -21,9 +21,9 @@ var Authentication = function (app, passport) {
     clientSecret      : config.asanaAuth.clientSecret,
     callbackURL       : config.asanaAuth.callbackURL,
     passReqToCallBack : true
-  }, function (req, token, refreshToken, profile, done) {
+  }, function (req, code, token, profile, done) {
       process.nextTick(function () {
-        !req.user ? authUtils.updateUser(profile, refreshToken.access_token, done) : authUtils.linkUser(profile, refreshToken.access_token, done);
+        !req.user ? authUtils.updateUser(profile, token.access_token, done) : authUtils.linkUser(profile, token.access_token, done);
       });
   }));
 
