@@ -18,7 +18,7 @@ app.factory('Students', function ($http, $location) {
     logout: function () {
       return $http.get('/unlink/asana')
         .success(function () {
-          $location.path('/');
+          $location.path('/') ;
         });
     }
   };
