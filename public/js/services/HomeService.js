@@ -6,7 +6,15 @@ app.factory('Dashboard', function ($http) {
         .success(function () {
           console.log('yes!');
         });
+    },
+
+    logout: function () {
+      return $http.get('/unlink/asana')
+        .success(function () {
+          alert("logged out");
+        })
     }
   };
+
 
 });
