@@ -7,38 +7,28 @@ var options         = {};
 
 module.exports = function (app) {
 
-  /* === FETCH SPECIFIC USER & PROJECT ID === */
+  /* === FETCH SPECIFIC USER & GRAB TASKS === */
   app.get('/users', function (req, res) {
     User.findOne({ _id: req.user._id }, function (err, user) {
 
       options.method  = 'GET';
-      options.url     = asanaURL + '/users/' + user._id
+      options.url     = asanaURL + '/workspaces/1213745087037/projects'
       options.headers = {
         'Authorization' : 'Bearer ' + user.asana.token
       };
 
-      console.log(options);
-      request(options, function (err, response, body) {
-        console.log(body);
-        res.send(body);
+      request(options, function (err, response, projects) {
+        projects = JSON.parse(projects).data;
+        projects.forEach(function (project) {
+          if (project.name === 'Amira Anuar') { // replace user.asana.name
+            options.url = asanaURL + '/projects/' + project.id + '/tasks';
+            request(options, function (err, response, tasks) {
+              res.send(JSON.parse(tasks).data);
+            });
+          }
+        });        
       });
     });
   });
 
-  /* === FETCH ALL TASKS ==== */
-  app.get('/user/:userId/projects/:projectId/tasks', function (req, res) {
-    User.findOne({ _id: req.params.userId }, function (err, user) {
-      if (err) { throw err; }
-
-      options.method  = 'GET';
-      options.url     = asanaURL + '/user/' + user._id + '/projects/' + req.params.projectId + '/tasks'
-      options.headers = {
-        'Authorization' : 'Bearer ' + user.asana.token
-      };
-
-      request(options, function (err, response, body) {
-        res.send(body);
-      });
-    });
-  });
 };
