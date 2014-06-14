@@ -1,7 +1,6 @@
 var User = require('../models/User.js');
 
 var createUser = function (profile, token, done) {
-  // console.log('Creating new user for ', profile.displayName);
   var newUser = new User();
   newUser._id         = profile.id;
   newUser.asana.token = token;

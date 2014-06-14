@@ -39,7 +39,7 @@ var Authentication = function (app, passport) {
     passport.authenticate('Asana', { failureRedirect: '/login' }),
     function (req, res) {
       console.log('Successfully logged in. Redirecting user.');
-      res.redirect('/');
+      res.redirect('/student/' + req.user._id);
     }
   );
 
