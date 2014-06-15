@@ -23,6 +23,7 @@ module.exports = function (app) {
           if (project.name === 'Amira Anuar') { // replace user.asana.name
             options.url = asanaURL + '/projects/' + project.id + '/tasks';
             request(options, function (err, response, tasks) {
+              console.log(JSON.parse(tasks).data);
               res.send(JSON.parse(tasks).data);
             });
           }
