@@ -4,7 +4,7 @@ app.controller('StudentController', function ($scope, Students) {
     Students.logout();
   };
 
-  $scope.newCompany = function () {
+  $scope.addNewCompany = function () {
     // do check on company name here
     Students.addNewCompany($scope.companyName);
   }

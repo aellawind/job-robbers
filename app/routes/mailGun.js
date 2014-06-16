@@ -25,7 +25,6 @@ module.exports = function (app) {
 
     User.findOne({ _id: req.user._id }, function (err, user) {
       if (err) { throw err; }
-            
       notifyHiringTeam(user, req.body.companyName);
 
       var options = {

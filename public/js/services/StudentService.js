@@ -31,8 +31,8 @@ app.factory('Students', function ($http, $location, $rootScope) {
       })
   };
 
-  $Students.addNewCompany = function (companyName) {
-    
+  Students.addNewCompany = function (companyName) {
+    return $http.post('/user/company', { companyName: companyName });
   };
 
   Students.logout = function () {
@@ -43,5 +43,7 @@ app.factory('Students', function ($http, $location, $rootScope) {
   };
 
   Students.fetchTasks();
+
+  return Students;
 
 });
