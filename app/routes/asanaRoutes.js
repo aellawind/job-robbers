@@ -16,7 +16,6 @@ module.exports = function (app) {
       };
 
       request(options, function (err, resp, body) {
-        console.log(options);
         console.log(body);
       });
     });

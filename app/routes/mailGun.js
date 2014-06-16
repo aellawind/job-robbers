@@ -2,10 +2,8 @@ var Mailgun = require('mailgun-js');
 var auth    = require('../../config/mailGunAuth.js');
 
 var User    = require('../models/User.js');
-var Company = require('../models/Company.js');
 
 var mailgun = new Mailgun({apiKey: auth.api_key, domain: auth.domain});
-
 
 var notifyHiringTeam = function (user, companyName) {
   var msgData = {};
@@ -28,4 +26,24 @@ module.exports = function (app) {
     // then save to company db
     // then email hiring team
   // else serve task id
+
+  app.get('/addCompany/:companyName', function (req, res) {
+
+    User.findOne({ _id: req.user._id }, function (err, user) {
+      if (err) { throw err; }
+
+      if (user.companies.indexOf(req.params.companyName) === -1) {
+        notifyHiringTeam(user, req.params.companyName);
+
+        // do asana api task add
+
+      } else {
+        // company already exists in users task
+      }
+
+    });
+
+
+  });
+
 };
