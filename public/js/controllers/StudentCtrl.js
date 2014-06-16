@@ -5,8 +5,8 @@ app.controller('StudentController', function ($scope, Students) {
   };
 
   $scope.newCompany = function () {
-    // $http.post(path, data);
-    $http.post('/user/company', { companyName: $scope.companyName})
+    // do check on company name here
+    Students.addNewCompany($scope.companyName);
   }
 
 

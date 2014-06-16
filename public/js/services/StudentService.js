@@ -1,9 +1,5 @@
 app.factory('Students', function ($http, $location, $rootScope) {
 
-  $rootScope.$emit('change:tasks', function (tasks) {
-
-  });
-
   var parseData = function (tasks) {
     var results       = [];
     var currentHeader = '';
@@ -16,14 +12,13 @@ app.factory('Students', function ($http, $location, $rootScope) {
           id       : task.id,
           subTasks : []
         };
-
       } else {
         if (!!task.name.length) { results[currentHeader]['subTasks'].push(task); }
       }
     });
 
     console.log(results);
-
+    // do stuff
   };
 
 
@@ -34,6 +29,10 @@ app.factory('Students', function ($http, $location, $rootScope) {
       .then(function (d) {
         parseData(d.data);
       })
+  };
+
+  $Students.addNewCompany = function (companyName) {
+    
   };
 
   Students.logout = function () {

@@ -25,30 +25,24 @@ module.exports = function (app) {
 
     User.findOne({ _id: req.user._id }, function (err, user) {
       if (err) { throw err; }
+            
+      notifyHiringTeam(user, req.body.companyName);
 
-      if (user.companies.indexOf(req.body.companyName) === -1) {
-        
-        notifyHiringTeam(user, req.body.companyName);
+      var options = {
+        method      : 'POST',
+        url         : 'https://app.asana.com/api/1.0/tasks' + taskId + '/addProject',
+        form        : {
+          'project'       : projectId, // this is the id of the project
+          'insert_after'  : headerId // id of the header/section
+        },
+        headers     : {
+          'Authorization' : 'Bearer ' + user.asana.token
+        }
+      };
 
-        var options = {
-          method      : 'POST',
-          url         : 'https://app.asana.com/api/1.0/tasks' + taskId + '/addProject',
-          form        : {
-            'project'       : projectId, // this is the id of the project
-            'insert_after'  : headerId // id of the header/section
-          },
-          headers     : {
-            'Authorization' : 'Bearer ' + user.asana.token
-          }
-        };
-
-        request(moveoptions, function(err,httpResponse,body) {
-          // do stuff body = { 'data' : {} } on success
-        });
-
-      } else {
-        res.send(400)
-      }
+      request(moveoptions, function(err,httpResponse,body) {
+        // do stuff body = { 'data' : {} } on success
+      });
     });
   });
 
