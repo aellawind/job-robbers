@@ -5,6 +5,12 @@ var User            = require('../models/User.js');
 var asanaURL        = 'https://app.asana.com/api/1.0';
 var options         = {};
 
+var request = require('request');
+var Promise = require('bluebird');
+var Authentication = require('./authentication.js');
+
+var User = require('../models/User.js');
+
 module.exports = function (app) {
 
   /* === FETCH SPECIFIC USER & GRAB TASKS === */
@@ -19,17 +25,16 @@ module.exports = function (app) {
 
       request(options, function (err, response, projects) {
         projects = JSON.parse(projects).data;
+        
         projects.forEach(function (project) {
           if (project.name === 'Amira Anuar') { // replace user.asana.name
             options.url = asanaURL + '/projects/' + project.id + '/tasks';
             request(options, function (err, response, tasks) {
-              console.log(JSON.parse(tasks).data);
               res.send(JSON.parse(tasks).data);
             });
           }
         });        
       });
-    });
   });
 
 };
