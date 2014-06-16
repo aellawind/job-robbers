@@ -21,23 +21,35 @@ var notifyHiringTeam = function (user, companyName) {
 };
 
 module.exports = function (app) {
-  app.get('/addCompany/:companyName', function (req, res) {
+  app.post('/user/company', function (req, res) {
 
     User.findOne({ _id: req.user._id }, function (err, user) {
       if (err) { throw err; }
 
-      if (user.companies.indexOf(req.params.companyName) === -1) {
-        notifyHiringTeam(user, req.params.companyName);
+      if (user.companies.indexOf(req.body.companyName) === -1) {
+        
+        notifyHiringTeam(user, req.body.companyName);
 
-        // do asana api task add
+        var options = {
+          method      : 'POST',
+          url         : 'https://app.asana.com/api/1.0/tasks' + taskId + '/addProject',
+          form        : {
+            'project'       : projectId, // this is the id of the project
+            'insert_after'  : headerId // id of the header/section
+          },
+          headers     : {
+            'Authorization' : 'Bearer ' + user.asana.token
+          }
+        };
+
+        request(moveoptions, function(err,httpResponse,body) {
+          // do stuff body = { 'data' : {} } on success
+        });
 
       } else {
-        // company already exists in users task
+        res.send(400)
       }
-
     });
-
-
   });
 
 };

@@ -4,7 +4,6 @@ app.factory('Dashboard', function ($http) {
     fetchProjects: function () {
       return $http.get('/users')
         .success(function () {
-          console.log('yes!');
         });
     }
   };
