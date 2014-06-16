@@ -21,12 +21,6 @@ var notifyHiringTeam = function (user, companyName) {
 };
 
 module.exports = function (app) {
-  // query database for company
-  // if not found create new task in asana
-    // then save to company db
-    // then email hiring team
-  // else serve task id
-
   app.get('/addCompany/:companyName', function (req, res) {
 
     User.findOne({ _id: req.user._id }, function (err, user) {
