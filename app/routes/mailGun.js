@@ -28,7 +28,4 @@ module.exports = function (app) {
     // then save to company db
     // then email hiring team
   // else serve task id
-  app.get('/users', function (req, res) {
-    notifyHiringTeam(req.user, 'Test Company');
-  });
 };
