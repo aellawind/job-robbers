@@ -6,7 +6,8 @@ var userSchema = mongoose.Schema({
     token : String,
     name  : String,
     email : String
-  }
+  },
+  companies: Array
 });
 
 var User = mongoose.model('User', userSchema);
