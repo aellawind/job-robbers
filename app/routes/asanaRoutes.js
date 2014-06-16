@@ -17,15 +17,6 @@ module.exports = function (app) {
         'Authorization' : 'Bearer ' + user.asana.token
       };
 
-
-// tasks/13138328574644/addProject -d "project=12864528848743" -d "insert_after=12864528848750"
-
-// request.post('https://app.asana.com/api/1.0/tasks/13106815162399/stories')
-// .form({'text':'whhooosh'})
-// .auth('1ZJ46ErR.AHU97qOmqGEKbi74QfkXSqv','',true);
-// the url was the link with the task id hardcoded
-// and then the '1ZJ' thing is my api key
-
       request(options, function (err, response, projects) {
         projects = JSON.parse(projects).data;
         projects.forEach(function (project) {
@@ -36,7 +27,7 @@ module.exports = function (app) {
               res.send(JSON.parse(tasks).data);
             });
 
-
+            // CODE TO MOVE TASKS AROUND
             var task = {
               id: '13138328574644' //this is the task id you want to move
             };
@@ -57,10 +48,6 @@ module.exports = function (app) {
         });        
       });
     });
-  });
-
-  app.get('/test', function(req,res) {
-    res.send('test');
   });
 
 };
