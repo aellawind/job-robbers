@@ -21,9 +21,11 @@ var notifyHiringTeam = function (user, companyName) {
 };
 
 module.exports = function (app) {
+
+  // ADD NEW COMPANY AND INSERT INTO LEADS
   app.post('/user/company', function (req, res) {
 
-    User.findOne({ _id: req.params.userId }, function (err, user) {
+    User.findOne({ _id: req.user._id }, function (err, user) {
       if (err) { throw err; }
 
       notifyHiringTeam(user, req.body.companyName);

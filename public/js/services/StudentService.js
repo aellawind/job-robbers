@@ -44,12 +44,11 @@ app.factory('Students', function ($http, $location, $rootScope) {
       })
   };
 
-  Students.addNewCompany = function (companyName, companyId, headerId) {
+  Students.addNewCompany = function (companyName, headerId) {
     if (!companyExists(companyName.toLowerCase())) {
       var data = {
-        companyName : companyName,
-        companyId   : companyId,
-        headerId    : headerId
+        companyName : companyName, // input company name
+        headerId    : headerId // leads id
       };
 
       return $http.post('/user/company', data)
