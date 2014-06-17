@@ -21,18 +21,19 @@ var notifyHiringTeam = function (user, companyName) {
 };
 
 module.exports = function (app) {
-  app.post('/user/company/:companyId/header/:headerId', function (req, res) {
+  app.post('/user/company', function (req, res) {
 
-    User.findOne({ _id: req.user._id }, function (err, user) {
+    User.findOne({ _id: req.params.userId }, function (err, user) {
       if (err) { throw err; }
+
       notifyHiringTeam(user, req.body.companyName);
 
       var options = {
         method      : 'POST',
-        url         : 'https://app.asana.com/api/1.0/tasks' + req.params.companyId + '/addProject',
+        url         : 'https://app.asana.com/api/1.0/tasks' + req.body.companyId + '/addProject',
         form        : {
           'project'       : user.projectId, // this is the id of the project
-          'insert_after'  : req.params.headerId // id of the header/section
+          'insert_after'  : req.body.headerId // id of the header/section
         },
         headers     : {
           'Authorization' : 'Bearer ' + user.asana.token

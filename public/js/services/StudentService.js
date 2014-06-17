@@ -44,9 +44,15 @@ app.factory('Students', function ($http, $location, $rootScope) {
       })
   };
 
-  Students.addNewCompany = function (companyName) {
+  Students.addNewCompany = function (companyName, companyId, headerId) {
     if (!companyExists(companyName.toLowerCase())) {
-      return $http.post('/user/company', { companyName: companyName })
+      var data = {
+        companyName : companyName,
+        companyId   : companyId,
+        headerId    : headerId
+      };
+
+      return $http.post('/user/company', data)
     } else {
       alert('Nope');
     }
