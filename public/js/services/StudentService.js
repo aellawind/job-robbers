@@ -2,7 +2,6 @@ app.factory('Students', function ($http, $location, $rootScope) {
 
 
   var updateTasks = function (tasks) {
-    console.log(tasks);
     $rootScope.$emit('change:tasks', tasks);
   };
 
@@ -13,9 +12,10 @@ app.factory('Students', function ($http, $location, $rootScope) {
 
     tasks.forEach(function(task) {
       if (task.name.indexOf(':') !== -1) {
-        currentHeader = task.name;
+        var taskName = task.name.slice(0, -1);
+        currentHeader = taskName
 
-        results[task.name] = {
+        results[taskName] = {
           id       : task.id,
           subTasks : []
         };
@@ -27,6 +27,9 @@ app.factory('Students', function ($http, $location, $rootScope) {
     updateTasks(results);
   };
 
+  var companyExists = function (companyName, companies) {
+    return false;
+  };
 
   var Students = {};
 
@@ -38,7 +41,15 @@ app.factory('Students', function ($http, $location, $rootScope) {
   };
 
   Students.addNewCompany = function (companyName, companies) {
-    return $http.post('/user/company', { companyName: companyName });
+    console.log(companies);
+
+    if (!companyExists(companyName, companies)) {
+      return $http.post('/user/company', { companyName: companyName })
+    } else {
+      alert('Nope')
+    }
+
+
   };
 
   Students.logout = function () {
