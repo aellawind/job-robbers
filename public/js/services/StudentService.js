@@ -45,14 +45,11 @@ app.factory('Students', function ($http, $location, $rootScope) {
   };
 
   Students.addNewCompany = function (companyName) {
-
     if (!companyExists(companyName.toLowerCase())) {
       return $http.post('/user/company', { companyName: companyName })
     } else {
       alert('Nope');
     }
-
-
   };
 
   Students.logout = function () {

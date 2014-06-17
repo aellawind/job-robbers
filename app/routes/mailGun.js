@@ -11,9 +11,9 @@ var notifyHiringTeam = function (user, companyName) {
   msgData.from    = 'Job Robbers <noreply.student.dashboard@jobrobbers.com>';
   msgData.to      = "Don <mamarildon@gmail.com>, Amira <aellawind@gmail.com>";
   msgData.subject = user.asana.name + ' has added ' + companyName + ' to their job search!'
-  msgData.html    = "Beautiful Hiring Team," +
-                    "Please follow up with " + user.asana.name + ". They have added " + companyName +
-                    " and we do not have an existing relationship with them."; 
+  msgData.text    = "Beautiful Hiring Team,\n\n" +
+                    "Please follow up with " + user.asana.name + 
+                    ". They have added " + companyName + "to their leads."; 
 
   mailgun.messages().send(msgData, function (error, body) {
     console.log(body);

@@ -1,13 +1,13 @@
 var mongoose = require ('mongoose');
 
 var userSchema = mongoose.Schema({
-  _id     : String,
-  asana   : {
-    token : String,
-    name  : String,
-    email : String
+  _id       : String,
+  asana     : {
+    token   : String,
+    name    : String,
+    email   : String
   },
-  companies: Array
+  projectId : String
 });
 
 var User = mongoose.model('User', userSchema);
