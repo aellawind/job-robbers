@@ -17,6 +17,5 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
 		controller: 'DragController'
 	})
 
-
-	$locationProvider.html5Mode(true);
+	$locationProvider.html5Mode(true);	
 }]);

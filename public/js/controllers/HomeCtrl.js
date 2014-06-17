@@ -1,3 +1,3 @@
-app.controller('HomeController', function($scope, Dashboard) {
+app.controller('HomeController', function($scope, Dashboard, $http) {
 
 });
