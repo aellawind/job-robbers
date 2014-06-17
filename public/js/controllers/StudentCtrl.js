@@ -12,7 +12,10 @@ app.controller('StudentController', function ($scope, $rootScope, Students) {
 
   $scope.addNewCompany = function () {
     // do check on company name here
-    Students.addNewCompany($scope.companyName);
+    Students.addNewCompany($scope.companyName)
+      .then(function (d) {
+        // append the new company to Leads
+      });
   }
 
 
