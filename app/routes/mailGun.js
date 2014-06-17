@@ -1,5 +1,7 @@
 var Mailgun = require('mailgun-js');
+var request = require('request');
 var auth    = require('../../config/mailGunAuth.js');
+var hr      = require('../../config/hr.js');
 
 var User    = require('../models/User.js');
 
@@ -11,9 +13,9 @@ var notifyHiringTeam = function (user, companyName) {
   msgData.from    = 'Job Robbers <noreply.student.dashboard@jobrobbers.com>';
   msgData.to      = "Don <mamarildon@gmail.com>, Amira <aellawind@gmail.com>";
   msgData.subject = user.asana.name + ' has added ' + companyName + ' to their job search!'
-  msgData.html    = "Beautiful Hiring Team," +
-                    "Please follow up with " + user.asana.name + ". They have added " + companyName +
-                    " and we do not have an existing relationship with them."; 
+  msgData.text    = "Beautiful Hiring Team,\n\n" +
+                    "Please follow up with " + user.asana.name + 
+                    ". They have added " + companyName + " to their leads."; 
 
   mailgun.messages().send(msgData, function (error, body) {
     console.log(body);
@@ -21,28 +23,50 @@ var notifyHiringTeam = function (user, companyName) {
 };
 
 module.exports = function (app) {
+
+  // ADD NEW COMPANY AND INSERT INTO LEADS
   app.post('/user/company', function (req, res) {
 
     User.findOne({ _id: req.user._id }, function (err, user) {
       if (err) { throw err; }
-      notifyHiringTeam(user, req.body.companyName);
-
       var options = {
         method      : 'POST',
-        url         : 'https://app.asana.com/api/1.0/tasks' + taskId + '/addProject',
+        url         : 'https://app.asana.com/api/1.0/workspaces/' + hr.workspace + '/tasks',
         form        : {
-          'project'       : projectId, // this is the id of the project
-          'insert_after'  : headerId // id of the header/section
+          'name'          : req.body.companyName,
+          'projects[0]'   : user.projectId,
+          'followers[0]'  : user._id,
+          'followers[1]'  : hr.followers[0].id,
+          'followers[2]'  : hr.followers[1].id
         },
         headers     : {
           'Authorization' : 'Bearer ' + user.asana.token
         }
       };
 
-      request(moveoptions, function(err,httpResponse,body) {
-        // do stuff body = { 'data' : {} } on success
+      request(options, function (err, httpResponse, body) {
+        notifyHiringTeam(user, req.body.companyName);
+
+        var task = JSON.parse(body).data;
+        console.log(task);
+
+        var moveoptions = {
+          method: 'POST',
+          url : 'https://app.asana.com/api/1.0/tasks/' + task.id + '/addProject',
+          form : {
+            'project' : user.projectId,
+            'insert_after' : req.body.headerId
+          },
+          headers: { 'Authorization' : 'Bearer ' + user.asana.token }
+        };
+
+        request(moveoptions, function (err, httpResponse, body) {
+          console.log(body);
+        });
+
       });
     });
   });
+
 
 };

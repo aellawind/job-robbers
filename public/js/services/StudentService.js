@@ -44,15 +44,22 @@ app.factory('Students', function ($http, $location, $rootScope) {
       })
   };
 
-  Students.addNewCompany = function (companyName) {
-
+  Students.addNewCompany = function (companyName, headerId) {
     if (!companyExists(companyName.toLowerCase())) {
-      return $http.post('/user/company', { companyName: companyName })
+      var data = {
+        companyName : companyName, // input company name
+        headerId    : headerId // leads id
+      };
+      userCompanies.push(companyName.toLowerCase());
+      return $http.post('/user/company', data);
     } else {
       alert('Nope');
     }
+  };
 
-
+  Students.updateTask = function (task, headerId) {
+    // insert task that's clicked 
+    // insert headerId that it was moved to
   };
 
   Students.logout = function () {
