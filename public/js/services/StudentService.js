@@ -1,8 +1,11 @@
 app.factory('Students', function ($http, $location, $rootScope) {
 
-  $rootScope.$emit('change:tasks', function (tasks) {
 
-  });
+  var updateTasks = function (tasks) {
+    $rootScope.$emit('change:tasks', tasks);
+  };
+
+  var userCompanies = [];
 
   var parseData = function (tasks) {
     var results       = [];
@@ -10,22 +13,27 @@ app.factory('Students', function ($http, $location, $rootScope) {
 
     tasks.forEach(function(task) {
       if (task.name.indexOf(':') !== -1) {
-        currentHeader = task.name;
+        var taskName = task.name.slice(0, -1);
+        currentHeader = taskName
 
-        results[task.name] = {
+        results[taskName] = {
           id       : task.id,
           subTasks : []
         };
-
       } else {
-        if (!!task.name.length) { results[currentHeader]['subTasks'].push(task); }
+        if (task.name.length > 0) { 
+          results[currentHeader]['subTasks'].push(task);
+          userCompanies.push(task.name.toLowerCase()); 
+        }
       }
     });
 
-    console.log(results);
-
+    updateTasks(results);
   };
 
+  var companyExists = function (companyName) {
+    return userCompanies.indexOf(companyName) !== -1  ? true : false;
+  };
 
   var Students = {};
 
@@ -36,6 +44,17 @@ app.factory('Students', function ($http, $location, $rootScope) {
       })
   };
 
+  Students.addNewCompany = function (companyName) {
+
+    if (!companyExists(companyName.toLowerCase())) {
+      return $http.post('/user/company', { companyName: companyName })
+    } else {
+      alert('Nope');
+    }
+
+
+  };
+
   Students.logout = function () {
     return $http.get('/unlink/asana')
       .then(function () {
@@ -44,5 +63,7 @@ app.factory('Students', function ($http, $location, $rootScope) {
   };
 
   Students.fetchTasks();
+
+  return Students;
 
 });
