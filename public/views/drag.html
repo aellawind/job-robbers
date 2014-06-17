@@ -1,0 +1,12 @@
+<div class='dr'>
+  <div ng-repeat='status in data' class='dr-status-box'>
+    <div>
+      <div class='dr-status-title'>
+        {{status.statusName}}
+      <div>
+      <div ng-repeat='companies in status.companies' class='dr-company' draggable='true'>
+        {{companies.companyName}}
+      </div>
+    </div>
+  </div>
+</div>
