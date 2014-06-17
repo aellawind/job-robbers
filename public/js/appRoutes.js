@@ -12,6 +12,10 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
 		controller: 'StudentController'
 	})
 
-	$locationProvider.html5Mode(true);
-	
+	.when('/drag',{
+		templateUrl: 'views/drag.html',
+		controller: 'DragController'
+	})
+
+	$locationProvider.html5Mode(true);	
 }]);

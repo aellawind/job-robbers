@@ -1,1 +1,28 @@
 body { padding-top:30px; }
+
+
+.dr {
+  border: 1px solid blue;
+  height: 300px;
+  text-align: center;
+  display: inline-block;
+}
+
+.dr-status-box{
+  border: 1px solid red;
+  height: 100%;
+  width: 160px;
+  font-weight: bold;
+  margin: 5px;
+  float: left;
+}
+
+.dr-status-title{
+  color: red;
+}
+
+.dr-company{
+  border: 1px solid green;
+  margin: 2px;
+  color: black;
+}
