@@ -7,7 +7,8 @@ var userSchema = mongoose.Schema({
     name    : String,
     email   : String
   },
-  projectId : Number
+  projectId : Number,
+  progress  : Array
 });
 
 var User = mongoose.model('User', userSchema);
