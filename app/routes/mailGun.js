@@ -21,7 +21,7 @@ var notifyHiringTeam = function (user, companyName) {
 };
 
 module.exports = function (app) {
-  app.post('/user/company', function (req, res) {
+  app.post('/user/company/:companyId/header/:headerId', function (req, res) {
 
     User.findOne({ _id: req.user._id }, function (err, user) {
       if (err) { throw err; }
@@ -29,10 +29,10 @@ module.exports = function (app) {
 
       var options = {
         method      : 'POST',
-        url         : 'https://app.asana.com/api/1.0/tasks' + taskId + '/addProject',
+        url         : 'https://app.asana.com/api/1.0/tasks' + req.params.companyId + '/addProject',
         form        : {
-          'project'       : projectId, // this is the id of the project
-          'insert_after'  : headerId // id of the header/section
+          'project'       : user.projectId, // this is the id of the project
+          'insert_after'  : req.params.headerId // id of the header/section
         },
         headers     : {
           'Authorization' : 'Bearer ' + user.asana.token

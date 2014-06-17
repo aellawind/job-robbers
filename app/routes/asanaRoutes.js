@@ -42,25 +42,5 @@ module.exports = function (app) {
     });
   });
 
-  app.get('/test', function (req, res) {
-    // CODE TO MOVE TASKS AROUND
-    var task = {
-      id: '13138328574644' //this is the task id you want to move
-    };
-    var moveoptions = {};
-    moveoptions.url = asanaURL + '/tasks/' + task.id + '/addProject';
-    moveoptions.method = 'POST';
-    moveoptions.form = {
-      'project': '12864528848743', // this is the id of the project
-      'insert_after': '12996935464425' // this is the id of the header/section
-    }
-    moveoptions.headers = {
-      'Authorization' : 'Bearer ' + req.user.asana.token
-    };
-    request(moveoptions, function(err,response,c) {
-      console.log('err',err,'response',c); //you will get an empty response that looks like {"data":{}}
-    });
-  });
-
 
 };
