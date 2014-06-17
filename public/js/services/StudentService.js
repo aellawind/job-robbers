@@ -50,11 +50,16 @@ app.factory('Students', function ($http, $location, $rootScope) {
         companyName : companyName, // input company name
         headerId    : headerId // leads id
       };
-
-      return $http.post('/user/company', data)
+      userCompanies.push(companyName.toLowerCase());
+      return $http.post('/user/company', data);
     } else {
       alert('Nope');
     }
+  };
+
+  Students.updateTask = function (task, headerId) {
+    // insert task that's clicked 
+    // insert headerId that it was moved to
   };
 
   Students.logout = function () {
