@@ -5,6 +5,7 @@ app.factory('Students', function ($http, $location, $rootScope) {
     $rootScope.$emit('change:tasks', tasks);
   };
 
+  var userCompanies = [];
 
   var parseData = function (tasks) {
     var results       = [];
@@ -20,15 +21,18 @@ app.factory('Students', function ($http, $location, $rootScope) {
           subTasks : []
         };
       } else {
-        if (task.name.length > 0) { results[currentHeader]['subTasks'].push(task); }
+        if (task.name.length > 0) { 
+          results[currentHeader]['subTasks'].push(task);
+          userCompanies.push(task.name.toLowerCase()); 
+        }
       }
     });
 
     updateTasks(results);
   };
 
-  var companyExists = function (companyName, companies) {
-    return false;
+  var companyExists = function (companyName) {
+    return userCompanies.indexOf(companyName) !== -1  ? true : false;
   };
 
   var Students = {};
@@ -40,13 +44,13 @@ app.factory('Students', function ($http, $location, $rootScope) {
       })
   };
 
-  Students.addNewCompany = function (companyName, companies) {
-    console.log(companies);
+  Students.addNewCompany = function (companyName) {
+    var exists = companyExists(companyName);
 
-    if (!companyExists(companyName, companies)) {
+    if (!exists) {
       return $http.post('/user/company', { companyName: companyName })
     } else {
-      alert('Nope')
+      alert('Nope');
     }
 
 
