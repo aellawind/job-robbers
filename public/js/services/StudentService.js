@@ -1,5 +1,12 @@
 app.factory('Students', function ($http, $location, $rootScope) {
 
+
+  var updateTasks = function (tasks) {
+    console.log(tasks);
+    $rootScope.$emit('change:tasks', tasks);
+  };
+
+
   var parseData = function (tasks) {
     var results       = [];
     var currentHeader = '';
@@ -13,12 +20,11 @@ app.factory('Students', function ($http, $location, $rootScope) {
           subTasks : []
         };
       } else {
-        if (!!task.name.length) { results[currentHeader]['subTasks'].push(task); }
+        if (task.name.length > 0) { results[currentHeader]['subTasks'].push(task); }
       }
     });
 
-    console.log(results);
-    // do stuff
+    updateTasks(results);
   };
 
 
@@ -31,7 +37,7 @@ app.factory('Students', function ($http, $location, $rootScope) {
       })
   };
 
-  Students.addNewCompany = function (companyName) {
+  Students.addNewCompany = function (companyName, companies) {
     return $http.post('/user/company', { companyName: companyName });
   };
 
