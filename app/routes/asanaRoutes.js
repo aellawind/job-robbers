@@ -1,14 +1,10 @@
 var request         = require('request');
 var Authentication  = require('./authentication.js');
 var User            = require('../models/User.js');
+var utils           = require('../utils/utils.js');
 
 var asanaURL        = 'https://app.asana.com/api/1.0';
 
-var request         = require('request');
-var Promise         = require('bluebird');
-var Authentication  = require('./authentication.js');
-
-var User = require('../models/User.js');
 
 module.exports = function (app) {
 
@@ -34,6 +30,7 @@ module.exports = function (app) {
 
             options.url = asanaURL + '/projects/' + project.id + '/tasks';
             request(options, function (err, response, tasks) {
+              if (!user.progress.length) { utils.saveProgress(JSON.parse(tasks).data, user); }
               res.send(JSON.parse(tasks).data);
             });
           }
@@ -63,5 +60,4 @@ module.exports = function (app) {
       });
     });
   });
-
 };

@@ -1,6 +1,6 @@
 var AsanaStrategy = require('passport-asana').Strategy;
 var config        = require('../../config/asanaKeys.js');
-var authUtils     = require('../utils/authUtils.js');
+var utils     = require('../utils/utils.js');
 var request       = require('request');
 
 var User = require('../models/User.js');
@@ -23,7 +23,7 @@ var Authentication = function (app, passport) {
     passReqToCallBack : true
   }, function (req, code, token, profile, done) {
       process.nextTick(function () {
-        !req.user ? authUtils.updateUser(profile, token.access_token, done) : authUtils.linkUser(profile, token.access_token, done);
+        !req.user ? utils.updateUser(profile, token.access_token, done) : utils.linkUser(profile, token.access_token, done);
       });
   }));
 
