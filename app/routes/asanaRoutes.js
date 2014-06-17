@@ -42,40 +42,57 @@ module.exports = function (app) {
     User.findOne({ _id: req.user._id }, function (err, user) {
       if (err) { throw err; }
 
-      // req.body = {
-      //   taskId  : current task to be moved
-      //   header  : header it transferred to { name: headerName, id: id }
-      //   from    : header it came from { name: fromName : id: id }
-      // }
+     /* ==== EXPECTED REQ.BODY TO GO WITH POST REQUEST TO /USER/UPDATE ==== 
+      *
+      *  req.body = {
+      *    taskId  : current task to be moved
+      *    header  : header it transferred to { name: headerName, id: id }
+      *    from    : header it came from { name: fromName : id: id }
+      *  }  
+      */
 
+      /* ==== DECLARE OPTIONS FOR REQUEST ==== */
       var options = {};
       options.method  = 'POST';
       options.url     = asanaURL + '/tasks/' + req.body.taskId + '/addProject';
       options.headers = { 'Authorization' : 'Bearer ' + user.asana.token }
 
-      var options = {
-        method      : 'POST',
-        url         : 'https://app.asana.com/api/1.0/tasks/' + req.body.taskId + '/addProject',
-        form        : {
-          'project'       : user.projectId, // this is the id of the project
-          'insert_after'  : req.body.headerId // id of the header/section
-        },
-        headers     : { 'Authorization' : 'Bearer ' + user.asana.token }
-      };
-
-      // .indexOf WILL NOT WORK IT IS AN ARRAY OF OBJECTS
-      var from = user.progress.indexOf(req.body.from.name);
-      var to   = user.progress.indexOf(req.body.header.name);
-
-      for (var i = from+1 ; i <= to ; i++) {
+      /* ==== IF GRAVEYARD, NO NEED TO ITERATE ==== */
+      if (req.body.header.name === 'Graveyard') {
         options.form = {
-          'project'      : user.projectId,
-          'insert_after' : user.progress[i].id
-        }
-
+          'project'     : user.projectId,
+          'insert_after': user.progress[0].id
+        };
+        
         request(options, function (err, httpResponse, body) {
           // do stuff body = { 'data' : {} } on success
         });
+      } else {
+        /* ==== GRAB INDEX OF FROM & TO ==== */
+        var from      = null;
+        var to        = null;
+        var progress  = user.progress;
+        
+        for (var i = 0 ; i < progress.length ; i++) {
+          if (!from || !to) {
+            if (progress[i][name] === req.body.from.name) { from = i; }
+            if (progress[i][name] === req.body.header.name) { to = i; }          
+          } else {
+            break;
+          }
+        }
+
+        /* ==== INSERT AFTER EACH PROGRESS FOR ACCURATE SYSSTORY ==== */
+        for (var i = from+1 ; i <= to ; i++) {
+          options.form = {
+            'project'      : user.projectId,
+            'insert_after' : user.progress[i].id
+          };
+
+          request(options, function (err, httpResponse, body) {
+            // do stuff body = { 'data' : {} } on success
+          });
+        } 
       }
     });
   });
