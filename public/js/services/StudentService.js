@@ -60,14 +60,16 @@ app.factory('Students', function ($http, $timeout, $location, $rootScope, $q) {
     // insert headerId that it was moved to
   };
 
+  Students.fetchComments = function (task) {
+    return $http.get('/task/' + task.id + '/comments')
+  };
+
   Students.logout = function () {
     return $http.get('/unlink/asana')
       .then(function () {
         $location.path('/')
       });
   };
-
-  // Students.fetchTasks();
 
   return Students;
 

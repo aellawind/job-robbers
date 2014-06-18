@@ -7,4 +7,13 @@ app.controller('DragController', function ($scope, Students) {
     $scope.data = data;
   });
 
+  $scope.renderModal = function (task) {
+    Students.fetchComments(task)
+      .then(function (d) {
+        task['story'] = d.data;
+        console.log(task);
+        // render modal body
+      });
+  }
+
 });

@@ -96,4 +96,21 @@ module.exports = function (app) {
       }
     });
   });
+
+  app.get('/task/:taskId/comments', function (req, res) {
+    User.findOne({ _id: req.user._id }, function (err, user) {
+      if (err) { throw err; }
+      
+      var options = {};
+      options.method  = 'GET';
+      options.url     = asanaURL + '/tasks/' + req.params.taskId + '/stories';
+      options.headers = { 'Authorization' : 'Bearer ' + user.asana.token };
+
+      request(options, function (err, httpResponse, body) {
+        console.log(JSON.parse(body));
+      })
+
+    })
+  });
+
 };
