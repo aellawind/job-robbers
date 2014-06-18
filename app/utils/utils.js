@@ -15,16 +15,16 @@ var organizeProgress = function (project, user) {
   console.log('Organizing user progress...');
   User.findOne({ _id: user._id }, function (err, user) {
     user.progress.push(
-      { 'Graveyard'                                           : project['Graveyard']},
-      { 'Leads'                                               : project['Leads']},
-      { 'Applied'                                             : project['Applied']},
-      { 'Screen Conversation Scheduled'                       : project['Screen Conversation Scheduled']},
-      { 'Post Screen Conversation'                            : project['Post Screen Conversation']},
-      { 'Pre-Onsite Tech Screen (phone/take home) Scheduled'  : project['Pre-Onsite Tech Screen (phone/take home) Scheduled']},
-      { 'Post Tech Screen (Phone/take home)'                  : project['Post Tech Screen (Phone/take home)']},
-      { 'On-Site Scheduled'                                   : project['On-Site Scheduled']},
-      { 'Post On-Site'                                        : project['Post On-Site']},
-      { 'Offers'                                              : project['Offers'] }
+      { name: 'Graveyard'                                           , id: project['Graveyard']},
+      { name: 'Leads'                                               , id: project['Leads']},
+      { name: 'Applied'                                             , id: project['Applied']},
+      { name: 'Screen Conversation Scheduled'                       , id: project['Screen Conversation Scheduled']},
+      { name: 'Post Screen Conversation'                            , id: project['Post Screen Conversation']},
+      { name: 'Pre-Onsite Tech Screen (phone/take home) Scheduled'  , id: project['Pre-Onsite Tech Screen (phone/take home) Scheduled']},
+      { name: 'Post Tech Screen (Phone/take home)'                  , id: project['Post Tech Screen (Phone/take home)']},
+      { name: 'On-Site Scheduled'                                   , id: project['On-Site Scheduled']},
+      { name: 'Post On-Site'                                        , id: project['Post On-Site']},
+      { name: 'Offers'                                              , id: project['Offers'] }
     );
     console.log('User progress organized & saved!');
     user.save();

@@ -62,39 +62,43 @@ module.exports = function (app) {
       if (data.dest.name === 'Graveyard') {
         options.form = {
           'project'     : user.projectId,
-          'insert_after': user.progress[0]['Graveyard']
+          'insert_after': user.progress[0].id
         };
+
         request(options, function (err, httpResponse, body) {
-          // do stuff body = { 'data' : {} } on success
+          err ? console.log(err) : console.log('Success!')
         });
-      } 
-    // else {
-    //     /* ==== GRAB INDEX OF FROM & TO ==== */
-    //     var from      = null;
-    //     var to        = null;
-    //     var progress  = user.progress;
+      } else {
+        /* ==== GRAB INDEX OF FROM & TO ==== */
+        var from      = null;
+        var to        = null;
+        var progress  = user.progress;
         
-    //     for (var i = 0 ; i < progress.length ; i++) {
-    //       if (!from || !to) {
-    //         if (progress[i][name] === req.body.from.name) { from = i; }
-    //         if (progress[i][name] === req.body.header.name) { to = i; }          
-    //       } else {
-    //         break;
-    //       }
-    //     }
+        for (var i = 0 ; i < progress.length ; i++) {
+          if (!from || !to) {
+            if (progress[i]['name'] === data.origin.name) { from = i; }
+            if (progress[i]['name'] === data.dest.name) { to = i; }
+          } else {
+            break;
+          }
+        }
 
-    //     /* ==== INSERT AFTER EACH PROGRESS FOR ACCURATE SYSSTORY ==== */
-    //     for (var i = from+1 ; i <= to ; i++) {
-    //       options.form = {
-    //         'project'      : user.projectId,
-    //         'insert_after' : user.progress[i].id
-    //       };
+        console.log(user.progress[from], user.progress[to]);
 
-    //       request(options, function (err, httpResponse, body) {
-    //         // do stuff body = { 'data' : {} } on success
-    //       });
-    //     } 
-    //   }
+        /* ==== INSERT AFTER EACH PROGRESS FOR ACCURATE SYSSTORY ==== */
+        for (var i = from+1 ; i <= to ; i++) {
+          options.form = {
+            'project'      : user.projectId,
+            'insert_after' : user.progress[i].id
+          };
+          console.log(user.progress[i].name);
+          console.log(options, '################################################');
+  
+          request(options, function (err, httpResponse, body) {
+            err ? console.log(err) : console.log('Success!')
+          });
+        }
+      }
     });
   });
 };
