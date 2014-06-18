@@ -61,7 +61,7 @@ module.exports = function (app) {
         };
 
         request(moveoptions, function (err, httpResponse, body) {
-          console.log(body);
+          res.send(200);
         });
 
       });
