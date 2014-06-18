@@ -14,8 +14,7 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
 			data: function (Students) {
 				return Students.fetchTasks()
 					.then(function (d) {
-						console.log(d);
-						return d.data;
+						return d;
 					})
 			}
 		}

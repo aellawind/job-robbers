@@ -3,27 +3,28 @@ app.factory('Students', function ($http, $location, $rootScope) {
   var userCompanies = [];
 
   var parseData = function (tasks) {
-    var results       = [];
-    var currentHeader = '';
+    var results = [];
+    var index   = 0;
 
     tasks.forEach(function(task) {
       if (task.name.indexOf(':') !== -1) {
         var taskName = task.name.slice(0, -1);
-        currentHeader = taskName
 
-        results[taskName] = {
-          id       : task.id,
+        results[index] = {
+          header   : taskName,
+          headerId : task.id,
           subTasks : []
         };
+
+        index++;
       } else {
         if (task.name.length > 0) { 
-          results[currentHeader]['subTasks'].push(task);
+          results[index-1]['subTasks'].push(task);
           userCompanies.push(task.name.toLowerCase()); 
         }
       }
     });
 
-    // updateTasks(results);
     return results;
   };
 
