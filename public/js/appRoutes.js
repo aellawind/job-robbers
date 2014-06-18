@@ -9,7 +9,15 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
 
 	.when('/student/:id', {
 		templateUrl: 'views/student.html',
-		controller: 'StudentController'
+		controller: 'StudentController',
+		resolve: {
+			data: function (Students) {
+				return Students.fetchTasks()
+					.then(function (d) {
+						return d;
+					})
+			}
+		}
 	})
 
 	.when('/drag',{
@@ -17,5 +25,4 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
 		controller: 'DragController'
 	})
 
-	$locationProvider.html5Mode(true);	
 }]);
