@@ -1,8 +1,9 @@
-app.factory('Students', function ($http, $location, $rootScope) {
+app.factory('Students', function ($http, $timeout, $location, $rootScope, $q) {
 
   var userCompanies = [];
 
   var parseData = function (tasks) {
+    var prom = $q.defer()
     var results = [];
     var index   = 0;
 
@@ -25,7 +26,12 @@ app.factory('Students', function ($http, $location, $rootScope) {
       }
     });
 
-    return results;
+    $timeout(function(){
+      prom.resolve(results);
+    },1)
+
+
+    return prom.promise;
   };
 
   var companyExists = function (companyName) {

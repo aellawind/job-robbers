@@ -1,63 +1,48 @@
-app.controller('DragController', function ($scope, dragData) {
+app.controller('DragController', function ($scope, Students) {
 
-  $scope.data = dragData;
+  Students.fetchTasks()
+
+  //load data into the controller
+  .then(function(data){
+    $scope.data = data;
+  });
 
 });
 
-//Function to generate a random number of companies for each status bin
-app.factory('dragData', function(){
-  var status = ['Offers', 'Post On-Site','Post-Phone Screen', 'Phone Screen Scheduled', 'Applied', 'Leads', 'Graveyard'];
+//Helper service used to support the drag and drop feature
+app.service('dragHelper', function(){
 
-  var sample = [];
-  var counter = 0;
+  //callback function that will be executed when a successful drop happens
+  this.dropHandler = function(dataArray){
+    //dataArray is an array of 3 objects:
+    //[ {source info}, {company info}, {destination info}]
+    console.log('Source: ', dataArray[0]);
+    console.log('Company: ', dataArray[1]);
+    console.log('Destination: ', dataArray[2]);
 
-  for (var i = 0; i<status.length; i++){
-    var group = [];
-    var random = Math.floor(Math.random()*5)+1;
-    for (var y=0; y<random; y++){
-      counter++;
-      group.push({companyName: 'company'+ counter});
-    }
-    var statusName = status[i];
-    sample.push({statusName: statusName, companies: group});
-  }
-  return sample;
+  };
+
+  //property that will be used to store a reference to the object being dragged
+  //this reference will be used when a successful drop occurs to append the object to the new status bin
+  this.element = null;
 });
 
-app.directive('statusBuckets', function(dragData, $window){
-  return {
-    replace: true,
-    restrict: 'AE',
-    scope: {},
-    templateUrl: '../../views/statusBuckets.html',
-    link: function(scope, element, attr){
-      //dummy data
-      scope.statuses=dragData;
-      var results = [];
-      for (var i = 0; i<dragData.length; i++){
-        for (var j = 0; j<dragData[i].companies.length; j++){
-          results.push(dragData[i].companies[j]);
-        }
-      }
-      scope.companies=results;
-      //
-      $window.elem;
-    }
-  }
-});
 
-app.directive('boxListeners', function(dragData){
+//Directive will add listeners to the status bins
+app.directive('boxListeners', function(dragHelper){
   return {
     replace: false,
     restrict: 'AE',
     scope: {},
     link: function(scope, element, attr){
-      //What the status bin should do when a company node drags into the bin
+
+      //Callback to handle dragenter event on target status bin
       var dragenterHandler = function(e){
-        console.log('Enter: ',this);
+        this.classList.add('dr-over');
+        return false;
       };
 
-      //What the status bin should do while the company node is hovering over the bin
+      //Callback to handle dragover event on target status bin
       var dragoverHandler = function(e){
         if (e.preventDefault) {
           //Necessary to allow the company node to drop.
@@ -69,16 +54,14 @@ app.directive('boxListeners', function(dragData){
         return false;
       };
 
-      //What the status bin should do when the company node drags out of the bin
+      //Callback to handle dragleave event on target status bin
       var dragleaveHandler = function(e){
-        console.log('leave: ',this);
+        this.classList.remove('dr-over');
+        return false;
       };
 
-      //What the status bin should do when the company node is dropped into the bin
+      //Callback to handle drop event on target status bin
       var dragdropHandler = function(e){
-        console.log('e',e);
-        console.log('dropped: ',this);
-
         if (e.stopPropagation) {
           // stops the browser from redirecting.
           e.stopPropagation();
@@ -86,44 +69,71 @@ app.directive('boxListeners', function(dragData){
         //Specify what type of drags are allowed. Must match the drop handler
         e.dataTransfer.dropEffect = 'move';
 
-        this.appendChild(elem);
+        //Invoke callback function on successful drop and send in source, company, and target data
+        dragHelper.dropHandler([
+          { sourceId: e.dataTransfer.getData('sourceStatusId'),
+            sourceName: e.dataTransfer.getData('sourceStatusName')},
+          { companyId: e.dataTransfer.getData('companyId'),
+            companyName: e.dataTransfer.getData('companyName')},
+          { destinationId: this.getAttribute('statusId'),
+            destinationName: this.getAttribute('statusName')}
+        ]);
+
+        //update the statusId and statusName attributes on the company object to reflect the new bin
+        dragHelper.element.setAttribute('statusId', this.getAttribute('statusId'));
+        dragHelper.element.setAttribute('statusName', this.getAttribute('statusName'));
+
+        //Append the object being moved to the target status bin
+        this.appendChild(dragHelper.element);
+        this.classList.remove('dr-over');
         return false;
       };
 
+      //Add event listeners and callbacks to the element
       var el = element[0];
       el.addEventListener('dragover', dragoverHandler);
       el.addEventListener('dragenter', dragenterHandler);
       el.addEventListener('dragleave', dragleaveHandler);
       el.addEventListener('drop', dragdropHandler);
-
     }
   };
 });
 
-app.directive('draggableItem', function(dragData){
+//Directive will add listeners to the draggable company objects
+app.directive('draggableItem', function(dragHelper){
   return {
     replace: true,
     restrict: 'AE',
     scope: {},
     link: function(scope, element, attr){
 
-      //What should the company node do when the company node starts dragging
+      //Callback to handle the dragstart event on the company object
       var dragstartHandler = function(e){
-        elem = this;
-        console.log('start: ',elem);
+
+        //Save a reference to the element to a property in dragHelper
+        dragHelper.element = this;
+
+        //Add data about this object to the dataTransfer object
+        e.dataTransfer.setData('companyId', this.getAttribute('companyId'));
+        e.dataTransfer.setData('companyName', this.getAttribute('companyName'));
+        e.dataTransfer.setData('sourceStatusId', this.getAttribute('statusId'));
+        e.dataTransfer.setData('sourceStatusName', this.getAttribute('statusName'));
+
+        this.classList.add('dr-drag');
+        return false;
       };
 
-      //What should the company node do when the company node stops dragging
+      //Callback to handle the dragend event
       var dragendHandler = function(e){
-        console.log('end: ',this);
+        this.classList.remove('dr-drag');
+        return false;
       };
 
+      //Enable dragging and add event listeners/callbacks
       var el = element[0];
       el.draggable = true;
-
       el.addEventListener('dragstart', dragstartHandler);
       el.addEventListener('dragend', dragendHandler);
     }
   };
 });
-
