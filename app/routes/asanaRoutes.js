@@ -62,12 +62,11 @@ module.exports = function (app) {
       if (data.dest.name === 'Graveyard') {
         options.form = {
           'project'     : user.projectId,
-          'insert_after': user.progress[0].id
+          'insert_after': user.progress[0]['Graveyard']
         };
-        console.log(user.progress[0]);        
-        // request(options, function (err, httpResponse, body) {
-        //   // do stuff body = { 'data' : {} } on success
-        // });
+        request(options, function (err, httpResponse, body) {
+          // do stuff body = { 'data' : {} } on success
+        });
       } 
     // else {
     //     /* ==== GRAB INDEX OF FROM & TO ==== */
