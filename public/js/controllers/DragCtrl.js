@@ -9,9 +9,8 @@ app.controller('DragController', function ($scope, Students) {
 
   $scope.renderModal = function (task) {
     Students.fetchComments(task)
-      .then(function (d) {
-        task['story'] = d.data;
-        console.log(task);
+      .then(function (comments) {
+        console.log(comments);
         // render modal body
       });
   }

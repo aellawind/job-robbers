@@ -98,7 +98,7 @@ module.exports = function (app) {
   });
 
   /* === FETCH TASK COMMENTS FOR MODAL === */
-  app.get('/task/:taskId/comments', function (req, res) {
+  app.get('/task/:taskId/stories', function (req, res) {
     User.findOne({ _id: req.user._id }, function (err, user) {
       if (err) { throw err; }
       
@@ -110,6 +110,21 @@ module.exports = function (app) {
       request(options, function (err, httpResponse, body) {
         console.log(JSON.parse(body).data);
         res.send(JSON.parse(body).data);
+      });
+    });
+  });
+
+  /* === ADD NEW COMMENT TO TASK === */
+  app.post('/task/:taskId/stories', function (req, res) {
+    User.findOne({ _id: req.user._id }, function (err, user) {
+      var options     = {};
+      options.method  = 'POST';
+      options.url     = asanaURL + '/tasks/' + req.params.taskId + '/stories';
+      options.headers = { 'Authorization' : 'Bearer ' + user.asana.token };
+      options.form    = { 'text' : req.body.comment };
+
+      request(options, function (err, httpResponse, body) {
+        err ? res.send(404) : res.send(200);
       });
     });
   });
