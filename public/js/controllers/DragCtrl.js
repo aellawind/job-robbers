@@ -10,17 +10,12 @@ app.controller('DragController', function ($scope, Students) {
 });
 
 //Helper service used to support the drag and drop feature
-app.service('dragHelper', function(){
+app.service('dragHelper', function($http){
 
   //callback function that will be executed when a successful drop happens
   this.dropHandler = function(data){
     //dataArray is an array of 3 objects:
-    //[ {source info}, {company info}, {destination info}]
-    // console.log('Source: ', dataArray[0]);
-    // console.log('Company: ', dataArray[1]);
-    // console.log('Destination: ', dataArray[2]);
-
-    console.log(data);
+    return $http.post('/user/update', data)
   };
 
   //property that will be used to store a reference to the object being dragged

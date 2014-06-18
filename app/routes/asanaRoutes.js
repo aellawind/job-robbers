@@ -45,55 +45,57 @@ module.exports = function (app) {
      /* ==== EXPECTED REQ.BODY TO GO WITH POST REQUEST TO /USER/UPDATE ==== 
       *
       *  req.body = {
-      *    Company   : current task to be moved
+      *    Company   : {current task to be moved}
       *    Dest      : header it transferred to { name: headerName, id: id }
       *    origin    : header it came from { name: fromName : id: id }
       *  }  
       */
+      var data = req.body
 
       /* ==== DECLARE OPTIONS FOR REQUEST ==== */
       var options = {};
       options.method  = 'POST';
-      options.url     = asanaURL + '/tasks/' + req.body.taskId + '/addProject';
+      options.url     = asanaURL + '/tasks/' + data.company.id + '/addProject';
       options.headers = { 'Authorization' : 'Bearer ' + user.asana.token }
 
       /* ==== IF GRAVEYARD, NO NEED TO ITERATE ==== */
-      if (req.body.header.name === 'Graveyard') {
+      if (data.dest.name === 'Graveyard') {
         options.form = {
           'project'     : user.projectId,
           'insert_after': user.progress[0].id
         };
+        console.log(user.progress[0]);        
+        // request(options, function (err, httpResponse, body) {
+        //   // do stuff body = { 'data' : {} } on success
+        // });
+      } 
+    // else {
+    //     /* ==== GRAB INDEX OF FROM & TO ==== */
+    //     var from      = null;
+    //     var to        = null;
+    //     var progress  = user.progress;
         
-        request(options, function (err, httpResponse, body) {
-          // do stuff body = { 'data' : {} } on success
-        });
-      } else {
-        /* ==== GRAB INDEX OF FROM & TO ==== */
-        var from      = null;
-        var to        = null;
-        var progress  = user.progress;
-        
-        for (var i = 0 ; i < progress.length ; i++) {
-          if (!from || !to) {
-            if (progress[i][name] === req.body.from.name) { from = i; }
-            if (progress[i][name] === req.body.header.name) { to = i; }          
-          } else {
-            break;
-          }
-        }
+    //     for (var i = 0 ; i < progress.length ; i++) {
+    //       if (!from || !to) {
+    //         if (progress[i][name] === req.body.from.name) { from = i; }
+    //         if (progress[i][name] === req.body.header.name) { to = i; }          
+    //       } else {
+    //         break;
+    //       }
+    //     }
 
-        /* ==== INSERT AFTER EACH PROGRESS FOR ACCURATE SYSSTORY ==== */
-        for (var i = from+1 ; i <= to ; i++) {
-          options.form = {
-            'project'      : user.projectId,
-            'insert_after' : user.progress[i].id
-          };
+    //     /* ==== INSERT AFTER EACH PROGRESS FOR ACCURATE SYSSTORY ==== */
+    //     for (var i = from+1 ; i <= to ; i++) {
+    //       options.form = {
+    //         'project'      : user.projectId,
+    //         'insert_after' : user.progress[i].id
+    //       };
 
-          request(options, function (err, httpResponse, body) {
-            // do stuff body = { 'data' : {} } on success
-          });
-        } 
-      }
+    //       request(options, function (err, httpResponse, body) {
+    //         // do stuff body = { 'data' : {} } on success
+    //       });
+    //     } 
+    //   }
     });
   });
 };
