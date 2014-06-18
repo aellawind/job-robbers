@@ -45,9 +45,9 @@ module.exports = function (app) {
      /* ==== EXPECTED REQ.BODY TO GO WITH POST REQUEST TO /USER/UPDATE ==== 
       *
       *  req.body = {
-      *    taskId  : current task to be moved
-      *    header  : header it transferred to { name: headerName, id: id }
-      *    from    : header it came from { name: fromName : id: id }
+      *    Company   : current task to be moved
+      *    Dest      : header it transferred to { name: headerName, id: id }
+      *    origin    : header it came from { name: fromName : id: id }
       *  }  
       */
 
