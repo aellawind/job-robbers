@@ -26,3 +26,11 @@ body { padding-top:30px; }
   margin: 2px;
   color: black;
 }
+
+.dr-drag{
+  opacity: 0.3;
+}
+
+.dr-over{
+  border-width: 3px;
+}
