@@ -42,14 +42,6 @@ module.exports = function (app) {
     User.findOne({ _id: req.user._id }, function (err, user) {
       if (err) { throw err; }
 
-     /* ==== EXPECTED REQ.BODY TO GO WITH POST REQUEST TO /USER/UPDATE ==== 
-      *
-      *  req.body = {
-      *    Company   : {current task to be moved}
-      *    Dest      : header it transferred to { name: headerName, id: id }
-      *    origin    : header it came from { name: fromName : id: id }
-      *  }  
-      */
       var data = req.body
 
       /* ==== DECLARE OPTIONS FOR REQUEST ==== */
@@ -101,18 +93,6 @@ module.exports = function (app) {
         }
 
         moveTask(from, to);
-        // for (var i = from+1 ; i <= to ; i++) {
-        //   options.form = {
-        //     'project'      : user.projectId,
-        //     'insert_after' : user.progress[i].id
-        //   };
-        //   console.log(user.progress[i].name);
-        //   console.log(options, '################################################');
-  
-        //   request(options, function (err, httpResponse, body) {
-        //     err ? console.log(err) : console.log('Success!')
-        //   });
-        // }
       }
     });
   });
