@@ -42,30 +42,23 @@ module.exports = function (app) {
     User.findOne({ _id: req.user._id }, function (err, user) {
       if (err) { throw err; }
 
-     /* ==== EXPECTED REQ.BODY TO GO WITH POST REQUEST TO /USER/UPDATE ==== 
-      *
-      *  req.body = {
-      *    taskId  : current task to be moved
-      *    header  : header it transferred to { name: headerName, id: id }
-      *    from    : header it came from { name: fromName : id: id }
-      *  }  
-      */
+      var data = req.body
 
       /* ==== DECLARE OPTIONS FOR REQUEST ==== */
       var options = {};
       options.method  = 'POST';
-      options.url     = asanaURL + '/tasks/' + req.body.taskId + '/addProject';
+      options.url     = asanaURL + '/tasks/' + data.company.id + '/addProject';
       options.headers = { 'Authorization' : 'Bearer ' + user.asana.token }
 
       /* ==== IF GRAVEYARD, NO NEED TO ITERATE ==== */
-      if (req.body.header.name === 'Graveyard') {
+      if (data.dest.name === 'Graveyard') {
         options.form = {
           'project'     : user.projectId,
           'insert_after': user.progress[0].id
         };
-        
+
         request(options, function (err, httpResponse, body) {
-          // do stuff body = { 'data' : {} } on success
+          err ? console.log(err) : console.log('Success!')
         });
       } else {
         /* ==== GRAB INDEX OF FROM & TO ==== */
@@ -75,24 +68,31 @@ module.exports = function (app) {
         
         for (var i = 0 ; i < progress.length ; i++) {
           if (!from || !to) {
-            if (progress[i][name] === req.body.from.name) { from = i; }
-            if (progress[i][name] === req.body.header.name) { to = i; }          
+            if (progress[i]['name'] === data.origin.name) { from = i; }
+            if (progress[i]['name'] === data.dest.name) { to = i; }
           } else {
             break;
           }
         }
 
         /* ==== INSERT AFTER EACH PROGRESS FOR ACCURATE SYSSTORY ==== */
-        for (var i = from+1 ; i <= to ; i++) {
+        var moveTask = function (index, to) {
           options.form = {
             'project'      : user.projectId,
-            'insert_after' : user.progress[i].id
+            'insert_after' : user.progress[index].id
           };
 
+          console.log('Moving to: ', user.progress[index].name);
+          console.log(options);
+          console.log('##########################################');
+
           request(options, function (err, httpResponse, body) {
-            // do stuff body = { 'data' : {} } on success
+            if (err) { res.send(err); }
+            index === to ? res.send(200) : moveTask(index+=1, to);
           });
-        } 
+        }
+
+        moveTask(from, to);
       }
     });
   });

@@ -10,16 +10,12 @@ app.controller('DragController', function ($scope, Students) {
 });
 
 //Helper service used to support the drag and drop feature
-app.service('dragHelper', function(){
+app.service('dragHelper', function($http){
 
   //callback function that will be executed when a successful drop happens
-  this.dropHandler = function(dataArray){
+  this.dropHandler = function(data){
     //dataArray is an array of 3 objects:
-    //[ {source info}, {company info}, {destination info}]
-    console.log('Source: ', dataArray[0]);
-    console.log('Company: ', dataArray[1]);
-    console.log('Destination: ', dataArray[2]);
-
+    return $http.post('/user/update', data)
   };
 
   //property that will be used to store a reference to the object being dragged
@@ -70,14 +66,24 @@ app.directive('boxListeners', function(dragHelper){
         e.dataTransfer.dropEffect = 'move';
 
         //Invoke callback function on successful drop and send in source, company, and target data
-        dragHelper.dropHandler([
-          { sourceId: e.dataTransfer.getData('sourceStatusId'),
-            sourceName: e.dataTransfer.getData('sourceStatusName')},
-          { companyId: e.dataTransfer.getData('companyId'),
-            companyName: e.dataTransfer.getData('companyName')},
-          { destinationId: this.getAttribute('statusId'),
-            destinationName: this.getAttribute('statusName')}
-        ]);
+        dragHelper.dropHandler
+        ({
+          origin: 
+            { 
+              id  : e.dataTransfer.getData('sourceStatusId'),
+              name: e.dataTransfer.getData('sourceStatusName')
+            },
+          company: 
+            {
+              id  : e.dataTransfer.getData('companyId'),
+              name: e.dataTransfer.getData('companyName')
+            },
+          dest: 
+            {
+              id  : this.getAttribute('statusId'),
+              name: this.getAttribute('statusName')
+            }
+        });
 
         //update the statusId and statusName attributes on the company object to reflect the new bin
         dragHelper.element.setAttribute('statusId', this.getAttribute('statusId'));
