@@ -24,7 +24,7 @@ module.exports = function (app) {
           if (project.name === 'Amira Anuar') { // replace user.asana.name  
             user.projectId = project.id;
             user.save();
-            options.url = asanaURL + '/projects/' + project.id + '/tasks';
+            options.url = asanaURL + '/projects/' + project.id + '/tasks?opt_mobile=true';
 
             request(options, function (err, response, tasks) {
               if (!user.progress.length) { utils.saveProgress(JSON.parse(tasks).data, user); }
@@ -97,6 +97,7 @@ module.exports = function (app) {
     });
   });
 
+  /* === FETCH TASK COMMENTS FOR MODAL === */
   app.get('/task/:taskId/comments', function (req, res) {
     User.findOne({ _id: req.user._id }, function (err, user) {
       if (err) { throw err; }
@@ -107,10 +108,10 @@ module.exports = function (app) {
       options.headers = { 'Authorization' : 'Bearer ' + user.asana.token };
 
       request(options, function (err, httpResponse, body) {
-        console.log(JSON.parse(body));
-      })
-
-    })
+        console.log(JSON.parse(body).data);
+        res.send(JSON.parse(body).data);
+      });
+    });
   });
 
 };
