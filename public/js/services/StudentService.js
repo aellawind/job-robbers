@@ -3,7 +3,6 @@ app.factory('Students', function ($http, $timeout, $location, $rootScope, $q) {
   var userCompanies = [];
 
   var parseData = function (tasks) {
-    var prom = $q.defer()
     var results = [];
     var index   = 0;
 
@@ -26,12 +25,7 @@ app.factory('Students', function ($http, $timeout, $location, $rootScope, $q) {
       }
     });
 
-    $timeout(function(){
-      prom.resolve(results);
-    },1)
-
-
-    return prom.promise;
+    return results;
   };
 
   var companyExists = function (companyName) {
@@ -47,13 +41,14 @@ app.factory('Students', function ($http, $timeout, $location, $rootScope, $q) {
       })
   };
 
-  Students.addNewCompany = function (companyName, headerId) {
+  Students.addNewCompany = function (companyName) {
     if (!companyExists(companyName.toLowerCase())) {
       var data = {
         companyName : companyName, // input company name
-        headerId    : headerId // leads id
       };
+
       userCompanies.push(companyName.toLowerCase());
+      
       return $http.post('/user/company', data);
     } else {
       alert('Nope');

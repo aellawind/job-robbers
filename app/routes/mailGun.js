@@ -55,7 +55,7 @@ module.exports = function (app) {
           url : 'https://app.asana.com/api/1.0/tasks/' + task.id + '/addProject',
           form : {
             'project' : user.projectId,
-            'insert_after' : req.body.headerId
+            'insert_after' : user.progress[1].id
           },
           headers: { 'Authorization' : 'Bearer ' + user.asana.token }
         };
