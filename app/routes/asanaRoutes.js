@@ -83,21 +83,36 @@ module.exports = function (app) {
           }
         }
 
-        console.log(user.progress[from], user.progress[to]);
-
         /* ==== INSERT AFTER EACH PROGRESS FOR ACCURATE SYSSTORY ==== */
-        for (var i = from+1 ; i <= to ; i++) {
+        var moveTask = function (index, to) {
           options.form = {
             'project'      : user.projectId,
-            'insert_after' : user.progress[i].id
+            'insert_after' : user.progress[index].id
           };
-          console.log(user.progress[i].name);
-          console.log(options, '################################################');
-  
+
+          console.log('Moving to: ', user.progress[index].name);
+          console.log(options);
+          console.log('##########################################');
+
           request(options, function (err, httpResponse, body) {
-            err ? console.log(err) : console.log('Success!')
+            if (err) { res.send(err); }
+            index === to ? res.send(200) : moveTask(index+=1, to);
           });
         }
+
+        moveTask(from, to);
+        // for (var i = from+1 ; i <= to ; i++) {
+        //   options.form = {
+        //     'project'      : user.projectId,
+        //     'insert_after' : user.progress[i].id
+        //   };
+        //   console.log(user.progress[i].name);
+        //   console.log(options, '################################################');
+  
+        //   request(options, function (err, httpResponse, body) {
+        //     err ? console.log(err) : console.log('Success!')
+        //   });
+        // }
       }
     });
   });
