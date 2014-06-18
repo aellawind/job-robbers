@@ -1,10 +1,5 @@
 app.factory('Students', function ($http, $location, $rootScope) {
 
-
-  var updateTasks = function (tasks) {
-    $rootScope.$emit('change:tasks', tasks);
-  };
-
   var userCompanies = [];
 
   var parseData = function (tasks) {
@@ -28,7 +23,8 @@ app.factory('Students', function ($http, $location, $rootScope) {
       }
     });
 
-    updateTasks(results);
+    // updateTasks(results);
+    return results;
   };
 
   var companyExists = function (companyName) {
@@ -38,9 +34,9 @@ app.factory('Students', function ($http, $location, $rootScope) {
   var Students = {};
 
   Students.fetchTasks = function () {
-    $http.get('/users')
+    return $http.get('/users')
       .then(function (d) {
-        parseData(d.data);
+        return parseData(d.data);
       })
   };
 
@@ -69,7 +65,7 @@ app.factory('Students', function ($http, $location, $rootScope) {
       });
   };
 
-  Students.fetchTasks();
+  // Students.fetchTasks();
 
   return Students;
 
