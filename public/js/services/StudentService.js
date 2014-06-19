@@ -3,7 +3,6 @@ app.factory('Students', function ($http, $timeout, $location, $rootScope, $q) {
   var userCompanies = [];
 
   var parseData = function (tasks) {
-    var prom = $q.defer()
     var results = [];
     var index   = 0;
 
@@ -26,18 +25,13 @@ app.factory('Students', function ($http, $timeout, $location, $rootScope, $q) {
       }
     });
 
-    $timeout(function(){
-      prom.resolve(results);
-    },1)
-
-
-    return prom.promise;
+    return results;
   };
 
   var companyExists = function (companyName) {
     return userCompanies.indexOf(companyName) !== -1  ? true : false;
   };
-
+  
   var Students = {};
 
   Students.fetchTasks = function () {
@@ -47,13 +41,14 @@ app.factory('Students', function ($http, $timeout, $location, $rootScope, $q) {
       })
   };
 
-  Students.addNewCompany = function (companyName, headerId) {
+  Students.addNewCompany = function (companyName) {
     if (!companyExists(companyName.toLowerCase())) {
       var data = {
         companyName : companyName, // input company name
-        headerId    : headerId // leads id
       };
+
       userCompanies.push(companyName.toLowerCase());
+      
       return $http.post('/user/company', data);
     } else {
       alert('Nope');
@@ -65,14 +60,23 @@ app.factory('Students', function ($http, $timeout, $location, $rootScope, $q) {
     // insert headerId that it was moved to
   };
 
+  Students.fetchComments = function (task) {
+    return $http.get('/task/' + task.id + '/stories')
+      .then(function (d) {
+        return d.data;
+      });
+  };
+
+  Students.addComment = function (task, comment) {
+    return $http.post('/task/' + task.id + '/stories', { comment: comment })
+  }
+
   Students.logout = function () {
     return $http.get('/unlink/asana')
       .then(function () {
         $location.path('/')
       });
   };
-
-  // Students.fetchTasks();
 
   return Students;
 
