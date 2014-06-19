@@ -21,7 +21,7 @@ module.exports = function (app) {
       request(options, function (err, response, projects) {
         projects = JSON.parse(projects).data;
         projects.forEach(function (project) {
-          if (project.name === 'Amira Anuar') { // replace user.asana.name  
+          if (project.name === user.asana.name) { // replace user.asana.name  
             user.projectId = project.id;
             user.save();
             options.url = asanaURL + '/projects/' + project.id + '/tasks?opt_mobile=true';
@@ -82,13 +82,30 @@ module.exports = function (app) {
             'insert_after' : user.progress[index].id
           };
 
-          console.log('Moving to: ', user.progress[index].name);
-          console.log(options);
-          console.log('##########################################');
 
           request(options, function (err, httpResponse, body) {
             if (err) { res.send(err); }
-            index === to ? res.send(200) : moveTask(index+=1, to);
+
+              console.log('##########################################');
+              console.log('Currently at: ', user.progress[index].name);
+              console.log(options);
+            
+            if (index !== to) {
+              var text = '$$' + user.asana.name + ' moved from ' + user.progress[index].name + ' to ' + user.progress[index+1].name + ' (' + user.asana.name + ')';
+    
+              var options2 = {};
+              options2.method  = 'POST';
+              options2.url     = asanaURL + '/tasks/' + data.company.id + '/stories';
+              options2.headers = { 'Authorization' : 'Bearer ' + user.asana.token };
+              options2.form    = { 'text' : text };
+
+              request(options2, function (err, httpResponse, body) {
+                if (err) { res.send(404); }
+                moveTask(index+=1, to);
+              });   
+            } else {
+              res.send(200);
+            }
           });
         }
 
