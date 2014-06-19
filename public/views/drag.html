@@ -1,9 +1,16 @@
 <div class='dr'>
-  <!-- <div status-buckets></div> -->
 
   <div box-listeners class="dr-status-box" ng-repeat="status in data" statusId='{{status.headerId}}' statusName='{{status.header}}'>
-    <div class="dr-status-title">{{status.header}}<div>
-    <div draggable-item ng-click='renderModal(company)' ng-repeat='company in status.subTasks' class='dr-company' companyId='{{company.id}}' companyName='{{company.name}}' statusId='{{status.headerId}}' statusName='{{status.header}}'>{{company.name}}</div>
-  </div>
+    
+    <div>
+        <div class="dr-status-title">{{status.header}}</div>
+          <div draggable-item 
+            ng-click='renderModal(company)' 
+            ng-repeat='company in status.subTasks' 
+            class='dr-company' 
+            companyId='{{company.id}}'      companyName='{{company.name}}' 
+            statusId='{{status.headerId}}'  statusName='{{status.header}}'>   {{company.name}}
+          </div>
+    </div>
 
 </div>

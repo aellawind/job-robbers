@@ -1,18 +1,26 @@
-app.controller('DragController', function ($scope, Students) {
+app.controller('DragController', function ($scope, $modal, Students) {
 
   Students.fetchTasks()
-
-  //load data into the controller
-  .then(function(data){
-    $scope.data = data;
-  });
+    .then(function(data){
+      $scope.data = data;
+    });
 
   $scope.renderModal = function (task) {
-    Students.fetchComments(task)
-      .then(function (comments) {
-        console.log(comments);
-        // render modal body
-      });
-  }
+    var instance = $modal.open({
+      templateUrl: 'views/modal.html',
+      controller: 'ModalController',
+      size: '',
+      resolve: {
+        comments: function (Students) {
+          return Students.fetchComments(task)
+          .then(function (comments) {
+            return [comments, task];
+          });
+        }
+      }
+    });
+  };
+
+
 
 });

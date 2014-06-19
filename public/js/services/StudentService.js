@@ -31,7 +31,7 @@ app.factory('Students', function ($http, $timeout, $location, $rootScope, $q) {
   var companyExists = function (companyName) {
     return userCompanies.indexOf(companyName) !== -1  ? true : false;
   };
-
+  
   var Students = {};
 
   Students.fetchTasks = function () {
