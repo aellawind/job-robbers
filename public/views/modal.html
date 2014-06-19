@@ -3,13 +3,8 @@
   <small>{{ task.notes }}</small>
 </div>
 
-<div class="modal-body" ng-repeat='comment in comments'>
-  <p> {{ comment }} </p>
+<div class="modal-body">
+  <p ng-repeat='comment in comments'> {{ comment.created_by.name }}: {{ comment.text }} </p>
 </div>
 
 <input type="text" ng-model="commentAdd" ng-keypress="addComment($event, commentAdd)" placeholder="What's on your mind?">
-
-<div class="modal-footer">
-  <button class="btn btn-primary" ng-click="ok()">OK</button>
-  <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-</div>

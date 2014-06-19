@@ -8,6 +8,4 @@ app.controller('ModalController', function ($scope, Students, comments) {
     }
   };
 
-
-
 });

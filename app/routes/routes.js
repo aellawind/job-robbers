@@ -121,7 +121,7 @@ module.exports = function (app) {
       options.method  = 'POST';
       options.url     = asanaURL + '/tasks/' + req.params.taskId + '/stories';
       options.headers = { 'Authorization' : 'Bearer ' + user.asana.token };
-      options.form    = { 'text' : req.body.comment };
+      options.form    = { 'text' : req.body.comment, 'type' : 'system' };
 
       request(options, function (err, httpResponse, body) {
         err ? res.send(404) : res.send(200);
