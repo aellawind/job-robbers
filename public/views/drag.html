@@ -1,6 +1,6 @@
 <div class='dr'>
 
-  <div box-listeners class="dr-status-box" ng-repeat="status in data" statusId='{{status.headerId}}' statusName='{{status.header}}'>
+  <div box-listeners class="dr-status-box" ng-repeat="status in data" statusId='{{status.headerId}}' statusName='{{status.header}}' statusOrder ='{{status.statusOrder}}'>
     
     <div>
         <div class="dr-status-title">{{status.header}}</div>
@@ -8,6 +8,7 @@
             ng-click='renderModal(company)' 
             ng-repeat='company in status.subTasks' 
             class='dr-company' 
+            statusOrder = '{{status.statusOrder}}'
             companyId='{{company.id}}'      companyName='{{company.name}}' 
             statusId='{{status.headerId}}'  statusName='{{status.header}}'>   {{company.name}}
           </div>
