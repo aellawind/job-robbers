@@ -31,6 +31,12 @@ body { padding-top:30px; }
   opacity: 0.3;
 }
 
-.dr-over{
+.dr-over-valid{
   border-width: 3px;
+  border-color: green;
+}
+
+.dr-over-invalid{
+  border-width: 3px;
+  border-color: red;
 }
