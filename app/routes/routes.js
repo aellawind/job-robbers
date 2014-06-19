@@ -58,7 +58,20 @@ module.exports = function (app) {
         };
 
         request(options, function (err, httpResponse, body) {
-          err ? console.log(err) : console.log('Success!')
+          if (err) { res.send(404); }
+          
+          var text = '$$' + user.asana.name + ' moved from ' + data.origin.name + ' to ' + data.dest.name + ' (' + user.asana.name + ')';              
+         
+          var options2 = {};
+          options2.method  = 'POST';
+          options2.url     = asanaURL + '/tasks/' + data.company.id + '/stories';
+          options2.headers = { 'Authorization' : 'Bearer ' + user.asana.token };
+          options2.form    = { 'text' : text };
+
+          request(options2, function (err, httpResponse, body) {
+            err ? res.send(404) : res.send(200);
+          });
+
         });
       } else {
         /* ==== GRAB INDEX OF FROM & TO ==== */
@@ -81,7 +94,6 @@ module.exports = function (app) {
             'project'      : user.projectId,
             'insert_after' : user.progress[index].id
           };
-
 
           request(options, function (err, httpResponse, body) {
             if (err) { res.send(err); }
@@ -108,7 +120,6 @@ module.exports = function (app) {
             }
           });
         }
-
         moveTask(from, to);
       }
     });
