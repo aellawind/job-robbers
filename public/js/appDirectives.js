@@ -1,5 +1,5 @@
 //Directive will add listeners to the status bins
-app.directive('boxListeners', function(dragHelper){
+app.directive('boxListeners', function(dragHelper, checkValidDrop){
   return {
     replace: false,
     restrict: 'AE',
@@ -8,15 +8,22 @@ app.directive('boxListeners', function(dragHelper){
 
       //Callback to handle dragenter event on target status bin
       var dragenterHandler = function(e){
+
+        //Get the statusOrder number for the target and source bins
         var targetStatusOrder = this.getAttribute('statusOrder');
         var sourceStatusOrder = dragHelper.element.getAttribute('statusOrder');
 
-        if (!sourceStatusOrder || sourceStatusOrder*1 < targetStatusOrder*1){
+        //run the checkValidDrop service to see if the drop is legal. if legal add valid css class
+        if (checkValidDrop(sourceStatusOrder, targetStatusOrder)){
           this.classList.add('dr-over-valid');
+
+        //if source and target statusOrder is the same, do not add any css classes
+        } else if (sourceStatusOrder*1 ===  targetStatusOrder*1){
+
+        //otherwise this is an illegal drop and do not add any css classes
         } else {
           this.classList.add('dr-over-invalid');
         }
-
         return false;
       };
 
@@ -31,22 +38,35 @@ app.directive('boxListeners', function(dragHelper){
 
       //Callback to handle dragleave event on target status bin
       var dragleaveHandler = function(e){
-        this.classList.remove('dr-over-valid');
-        this.classList.remove('dr-over-invalid');
-        console.log(this);
+
+        //Get the box coordinates the status bin
+        var statusBox = this.getBoundingClientRect();
+
+        //Get the x and y coordinates of where the mouse left the status bin
+        var drag = {y: e.y, x:e.x};
+
+        //check to see if the mouse is actually outside of the status bin or just over items in the status bin (which caused the leave)
+        //if outside of the status bin, then remove the classes
+        if (e.y < statusBox.top || e.y > statusBox.bottom || e.x < statusBox.left || e.x >statusBox.right){
+          this.classList.remove('dr-over-valid');
+          this.classList.remove('dr-over-invalid');
+        }
         return false;
       };
 
       //Callback to handle drop event on target status bin
       var dragdropHandler = function(e){
-        var targetStatusOrder = this.getAttribute('statusOrder');
-        var sourceStatusOrder = e.dataTransfer.getData('sourceStatusOrder');
-        console.log(this);
 
+        //Get the statusOrder number for the target and source bins
+        var targetStatusOrder = this.getAttribute('statusOrder');
+        var sourceStatusOrder = dragHelper.element.getAttribute('statusOrder');
+
+        //remove css classes
         this.classList.remove('dr-over-valid');
         this.classList.remove('dr-over-invalid');
 
-        if (!sourceStatusOrder || sourceStatusOrder*1 < targetStatusOrder*1){
+        //run the checkValidDrop service to see if the drop is legal. if legal, allow drop
+        if (checkValidDrop(sourceStatusOrder, targetStatusOrder)){
           if (e.stopPropagation) {
             // stops the browser from redirecting.
             e.stopPropagation();

@@ -13,6 +13,36 @@ app.service('dragHelper', function($http, statusOrder){
   this.element = null;
 });
 
+//Service used to check if drop is valid or not. If changes are needed, only this service and app.value need to be changed
+app.factory('checkValidDrop', function(statusOrder){
+
+  var check = function (source, target){
+
+    //check to see if source is unknown
+    //an unknown status bin means the bin is a non-standard bin defined in app.value
+    //therefore any more outside of the unknown bin is legal
+    if (source === 'unknown'){
+      return true;
+
+    //if the target status bin is to a non-standard bin, the move is illegal
+    } else if (target === 'unknown') {
+      return false;
+
+    //Check to see if the target is the Graveyard or if the target has a higher statusOrder
+    //If so, legal
+    } else if (target*1 === statusOrder['Graveyard'] || source*1 < target*1){
+      return true;
+
+    //All other cases are illegal (source > target)
+    } else {
+      return false;
+    }
+  };
+
+  return check;
+});
+
+//Value used for defining the status Order of each status.
 app.value('statusOrder', {
   'Graveyard': 1,
   'Leads': 2,

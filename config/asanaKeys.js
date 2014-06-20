@@ -1,8 +1,8 @@
 module.exports = {
   
-  'asanaAuth' : {
-    'clientID'      : '13096369095492',
-    'clientSecret'  : 'fa0e77a9ed5254ffa20abad73c8e3b27',
+ 'asanaAuth' : {
+    'clientID'      : '13235029827133',
+    'clientSecret'  : '829a75907ceff9ac6ce709d45f774c88',
     'callbackURL'   : 'http://127.0.0.1:8080/auth/asana/callback'
   }
 
