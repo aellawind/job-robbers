@@ -2,18 +2,18 @@
   "name": "starter-node-angular",
   "main": "server.js",
   "dependencies": {
-    "express": "~3.4.8",
+    "bluebird": "^2.1.1",
+    "body-parser": "~1.0.0",
+    "connect-flash": "~0.1.1",
+    "cookie-parser": "~1.0.0",
+    "express": "^3.4.8",
+    "express-session": "^1.0.4",
+    "mailgun-js": "^0.4.13",
+    "method-override": "^1.0.2",
     "mongoose": "~3.6.13",
+    "morgan": "~1.0.0",
     "passport": "^0.2.0",
     "passport-asana": "0.0.1",
-    "morgan": "~1.0.0",
-    "body-parser": "~1.0.0",
-    "cookie-parser": "~1.0.0",
-    "method-override": "^1.0.2",
-    "express-session": "~1.0.0",
-    "connect-flash": "~0.1.1",
-    "request": "^2.36.0",
-    "bluebird": "^2.1.1",
-    "mailgun-js": "^0.4.13"
+    "request": "^2.36.0"
   }
 }
