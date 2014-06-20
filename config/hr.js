@@ -1,9 +1,9 @@
 module.exports = {
-  workspace : '1213745087037',
+  workspace : process.env.WORKSPACE,
 
   followers : 
   [
-    { id: 6384579925796, name: 'Ruan Pethiyagoda' },
-    { id: 12218806480331, name: 'Mike Adams' }
+    { id: process.env.RUAN, name: 'Ruan Pethiyagoda' },
+    { id: process.env.MIKE, name: 'Mike Adams' }
   ]
 }

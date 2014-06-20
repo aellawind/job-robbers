@@ -35,9 +35,7 @@ module.exports = function (app) {
         form        : {
           'name'          : req.body.companyName,
           'projects[0]'   : user.projectId,
-          'followers[0]'  : user._id,
-          'followers[1]'  : hr.followers[0].id,
-          'followers[2]'  : hr.followers[1].id
+          'followers[0]'  : user._id
         },
         headers     : {
           'Authorization' : 'Bearer ' + user.asana.token

@@ -7,8 +7,8 @@ module.exports = {
  //  },
 
  'asanaAuth': {
- 	'clientID' 	   : '13247802663989',
- 	'clientSecret' : 'c1a81f33fd10c952f3c7069d2c8ff756',
- 	'callbackURL'  : 'http://jobrobbers.azurewebsites.net/auth/asana/callback'
+ 	'clientID' 	   : process.env.CLIENTID,
+ 	'clientSecret' : process.env.CLIENTSECRET,
+ 	'callbackURL'  : process.env.CALLBACK
  }
 };
