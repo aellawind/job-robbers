@@ -14,12 +14,16 @@ var session = require('express-session');
 
 /* ==== CONFIG ==== */
 var db = require('./config/db.js');
-var port = process.env.PORT || 8080;
+app.set('port', process.env.PORT || 8080);
+var workspace = process.env.WORKSPACE;
+
+
 
 mongoose.connect(db.url);
 mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
 mongoose.connection.once('open', function() { console.log("Mongo DB connected!"); });
 
+app.set('port', process.env.PORT || 8080);
 /* ==== STATIC SERVING ==== */
 app.use(express.static(__dirname + '/public'));     // set the static files location /public/img will be /img for users
 
@@ -34,6 +38,7 @@ app.use(passport.initialize());
 app.use(passport.session());                // persistent login sessions
 app.use(flash());                           // use connect-flash for flash messages stored in session
 
+
 app.use(methodOverride());                  // simulate DELETE and PUT
 
 // authentication and routes
@@ -42,6 +47,7 @@ require('./app/routes/mailGun.js')(app);
 require('./app/routes/routes.js')(app); // routes
 
 // start app
-app.listen(port);
-console.log('JobRobber 8] started on port ' + port);
+var server = app.listen(app.get('port'), function() {
+  console.log('JobRobbers listening on  ' + server.address().port);
+});
 exports = module.exports = app;
