@@ -58,7 +58,7 @@ app.service('dragHelper', function($http, statusOrder, $timeout, $document){
     companyNode.setAttribute('statusName', originalNode.getAttribute('statusName'));
     companyNode.setAttribute('statusOrder', originalNode.getAttribute('statusOrder'));
 
-    originalNode.appendChild(companyNode);
+    originalNode.querySelector('#companyContainer').appendChild(companyNode);
   }
 });
 

@@ -2,18 +2,42 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 	<base href="/">
 
 	<title>Starter Node and Angular</title>
 
 	<!-- CSS -->
-	<link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/style.css"> <!-- custom styles -->
+    <!-- Bootstrap core CSS -->
+    <link href="libs/bootstrap-css-only/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-reset.css" rel="stylesheet">
+    <!--external css-->
+    <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style-responsive.css" rel="stylesheet" />
+
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.min.js"></script>
+    <![endif]-->
+
+
+</head>
+<body ng-app="jobRob">		
+
+
+	<!-- ANGULAR DYNAMIC CONTENT -->
+	<div ng-view></div>
 
 	<!-- JS -->
 	<script type="text/javascript" src="libs/angular/angular.js"></script>
 	<script type="text/javascript" src="libs/angular-route/angular-route.js"></script>
-  <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+<!--   // <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script> -->
+  <script src="libs/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 
 
 	<!-- ANGULAR CUSTOM -->
@@ -32,9 +56,16 @@
 
 	<script type="text/javascript" src="js/controllers/ModalCtrl.js"></script>
 		
-</head>
-<body ng-app="jobRob">		
-	<!-- ANGULAR DYNAMIC CONTENT -->
-	<div ng-view></div>
+	<!-- // <script src="js/jquery-1.8.3.min.js"></script> -->
+    <!-- // <script src="assets/jquery-ui/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script> -->
+    <!-- // <script src="js/bootstrap.min.js"></script> -->
+    <!-- // <script class="include" type="text/javascript" src="js/jquery.dcjqaccordion.2.7.js"></script> -->
+    <!-- // <script src="js/jquery.scrollTo.min.js"></script> -->
+    <!-- // <script src="js/jquery.nicescroll.js" type="text/javascript"></script> -->
+    <!-- // <script src="js/respond.min.js" ></script> -->
+    <!-- // <script src="js/draggable-portlet.js"></script> -->
+
+    <!-- // <script src="js/common-scripts.js"></script> -->
+
 </body>
 </html>

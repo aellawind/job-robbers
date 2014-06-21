@@ -7,7 +7,7 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
 		controller: 'HomeController'
 	})
 
-	.when('/student/:id', {
+	.when('/student', {
 		templateUrl: 'views/student.html',
 		controller: 'StudentController',
 		resolve: {
