@@ -43,7 +43,6 @@ module.exports = function (app) {
       if (err) { throw err; }
 
       var data = req.body
-
       /* ==== DECLARE OPTIONS FOR REQUEST ==== */
       var options = {};
       options.method  = 'POST';
