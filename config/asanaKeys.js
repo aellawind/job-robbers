@@ -14,4 +14,3 @@ module.exports = {
 
 };
 
-/libs/bootstrap-css-only/css/bootstrap.min.css
