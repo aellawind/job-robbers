@@ -1,16 +1,65 @@
+
 //Helper service used to support the drag and drop feature
-app.service('dragHelper', function($http, statusOrder){
+app.service('dragHelper', function($http, statusOrder, $timeout, $document){
 
   console.log(statusOrder);
+
   //callback function that will be executed when a successful drop happens
   this.dropHandler = function(data){
-    //dataArray is an array of 3 objects:
-    return $http.post('/user/update', data);
+    //data is an array of 3 objects
+    that = this;
+    var callback = function(data){
+      console.log('Executed Call Back: ', data);
+      $http.post('/user/update', data);
+      console.log('history stack: ', that.history);
+      that.history.shift()
+      console.log('history stack: ', that.history);
+    }
+    this.history.push({timeout:$timeout(callback, 10000), data: data});
   };
 
   //property that will be used to store a reference to the object being dragged
   //this reference will be used when a successful drop occurs to append the object to the new status bin
   this.element = null;
+
+  //event history
+  this.history = [];
+
+  //creating a variable to reference this
+  var that = this;
+
+  this.undoLast = function(){
+
+    if (!that.history.length){
+      return;
+    }
+    //pull out the last change from the history stack
+    var last = that.history.pop();
+
+    //cancel the http post request
+    $timeout.cancel(last.timeout);
+
+    //get the original ids from the data field
+    var originalId = last.data.origin.id;
+    var companyId = last.data.company.id;
+
+    //find the original node
+    var originalNodeList = $document[0].querySelectorAll('[statusId="'+originalId+'"]');
+    var originalNode;
+    for (var i = 0; i< originalNodeList.length; i++){
+      if (originalNodeList[i].getAttribute('elementType')==='statusbox'){
+        originalNode = originalNodeList[i];
+      }
+    }
+
+    //get the company name
+    var companyNode = $document[0].querySelectorAll('[companyId="'+companyId+'"]')[0];
+    companyNode.setAttribute('statusId', originalNode.getAttribute('statusId'));
+    companyNode.setAttribute('statusName', originalNode.getAttribute('statusName'));
+    companyNode.setAttribute('statusOrder', originalNode.getAttribute('statusOrder'));
+
+    originalNode.appendChild(companyNode);
+  }
 });
 
 //Service used to check if drop is valid or not. If changes are needed, only this service and app.value need to be changed
