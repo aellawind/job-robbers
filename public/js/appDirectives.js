@@ -100,7 +100,8 @@ app.directive('boxListeners', function(dragHelper, checkValidDrop){
           dragHelper.element.setAttribute('statusOrder', this.getAttribute('statusOrder'));
 
           //Append the object being moved to the target status bin
-          this.appendChild(dragHelper.element);
+          this.querySelector('#companyContainer').appendChild(dragHelper.element);
+          // this.appendChild(dragHelper.element);
           this.classList.remove('dr-over');
         }
         return false;
