@@ -26,42 +26,30 @@ module.exports = function (app) {
 
   // ADD NEW COMPANY AND INSERT INTO LEADS
   app.post('/user/company', function (req, res) {
-
     User.findOne({ _id: req.user._id }, function (err, user) {
       if (err) { throw err; }
-      var options = {
-        method      : 'POST',
-        url         : 'https://app.asana.com/api/1.0/workspaces/' + hr.workspace + '/tasks',
-        form        : {
-          'name'          : req.body.companyName,
-          'projects[0]'   : user.projectId,
-          'followers[0]'  : user._id
-        },
-        headers     : {
-          'Authorization' : 'Bearer ' + user.asana.token
-        }
-      };
+      var options     = {}
+      options.method  = 'POST';
+      options.url     = 'https://app.asana.com/api/1.0/workspaces/' + hr.workspace + '/tasks';
+      options.headers = { 'Authorization' : 'Bearer ' + user.asana.token };
 
       request(options, function (err, httpResponse, body) {
+        // SEND NOTIFICATION E-MAIL TO HIRING TEAM 
         notifyHiringTeam(user, req.body.companyName);
-
         var task = JSON.parse(body).data;
-        console.log(task);
 
-        var moveoptions = {
-          method: 'POST',
-          url : 'https://app.asana.com/api/1.0/tasks/' + task.id + '/addProject',
-          form : {
-            'project' : user.projectId,
-            'insert_after' : user.progress[1].id
-          },
-          headers: { 'Authorization' : 'Bearer ' + user.asana.token }
+        var moveOptions     = {};
+        moveOptions.method  = 'POST';
+        moveOptions.url     = 'https://app.asana.com/api/1.0/tasks/' + task.id + '/addProject';
+        moveOptions.headers = { 'Authorization' : 'Bearer ' + user.asana.token };
+        moveOptions.fom     = {
+          'project' : user.projectId,
+          'insert_after' : user.progress[1].id          
         };
 
-        request(moveoptions, function (err, httpResponse, body) {
+        request(moveOptions, function (err, httpResponse, body) {
           res.send(200);
         });
-
       });
     });
   });
