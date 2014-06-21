@@ -8,7 +8,7 @@ var asanaURL        = 'https://app.asana.com/api/1.0';
 
 module.exports = function (app) {
 
-  /* === FETCH SPECIFIC USER & GRAB TASKS === */
+  /* ==== FETCH SPECIFIC USER & GRAB TASKS ==== */
   app.get('/users', function (req, res) {
     User.findOne({ _id: req.user._id }, function (err, user) {
       var options     = {};
@@ -21,7 +21,9 @@ module.exports = function (app) {
       request(options, function (err, response, projects) {
         projects = JSON.parse(projects).data;
         projects.forEach(function (project) {
-          if (project.name === user.asana.name) { // replace user.asana.name  
+
+          /* ==== PULL CURRENT USER OUT OF HR WORKSPACE ==== */
+          if (project.name === user.asana.name) {  
             user.projectId = project.id;
             user.save();
             options.url = asanaURL + '/projects/' + project.id + '/tasks?opt_mobile=true';
@@ -37,19 +39,19 @@ module.exports = function (app) {
   });
 
 
-  /* === UPDATE TASK TO MOVE TO NEW HEADER === */
+  /* ==== UPDATE TASK TO MOVE TO NEW HEADER ==== */
   app.post('/user/update', function (req, res) {
     User.findOne({ _id: req.user._id }, function (err, user) {
       if (err) { throw err; }
 
       var data = req.body
-      /* ==== DECLARE OPTIONS FOR REQUEST ==== */
+
       var options = {};
       options.method  = 'POST';
       options.url     = asanaURL + '/tasks/' + data.company.id + '/addProject';
       options.headers = { 'Authorization' : 'Bearer ' + user.asana.token }
 
-      /* ==== IF GRAVEYARD, NO NEED TO ITERATE ==== */
+      /* ==== IF GRAVEYARD, SEND TO GRAVEYARD ==== */
       if (data.dest.name === 'Graveyard') {
         options.form = {
           'project'     : user.projectId,
@@ -58,7 +60,9 @@ module.exports = function (app) {
 
         request(options, function (err, httpResponse, body) {
           if (err) { res.send(404); }
-          
+
+          /* ==== SET '$$' AS SECRET CODE FOR JOBCOP PARSER TO INTERPRET AS A SYSTEM MOVEMENT ==== */
+          /* ==== Asana API currently does not support system comments when changes are made via their API ==== */
           var text = '$$' + user.asana.name + ' moved from ' + data.origin.name + ' to ' + data.dest.name + ' (' + user.asana.name + ')';              
          
           var options2 = {};
@@ -73,7 +77,9 @@ module.exports = function (app) {
 
         });
       } else {
-        /* ==== GRAB INDEX OF FROM & TO ==== */
+
+        /* ==== GRAB INDEX OF FROM & TO RELATIVE TO USER.PROGRESS SCHEMA ==== */
+        /* ==== utils/utils.js lines 14-32 ==== */
         var from      = null;
         var to        = null;
         var progress  = user.progress;
@@ -99,8 +105,7 @@ module.exports = function (app) {
 
               console.log('##########################################');
               console.log('Currently at: ', user.progress[index].name);
-              console.log(options);
-            
+                
             if (index !== to) {
               var text = '$$' + user.asana.name + ' moved from ' + user.progress[index].name + ' to ' + user.progress[index+1].name + ' (' + user.asana.name + ')';
     
@@ -135,7 +140,6 @@ module.exports = function (app) {
       options.headers = { 'Authorization' : 'Bearer ' + user.asana.token };
 
       request(options, function (err, httpResponse, body) {
-        console.log(JSON.parse(body).data);
         res.send(JSON.parse(body).data);
       });
     });
