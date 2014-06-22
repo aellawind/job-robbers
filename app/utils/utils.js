@@ -56,10 +56,9 @@ utils.updateUser = function (profile, token, done) {
           user._id         = profile.id;
           user.asana.token = token;
           user.asana.name  = profile.displayName;
-          user.asana.email = profile.emails[0].value.toLowerCase() || ''; // pull the first email
+          user.asana.email = profile.emails[0].value.toLowerCase() || '';
           user.save();
 
-          console.log(user);
           return done(null, user);
       } else {
         user.asana.token = token;
@@ -75,7 +74,6 @@ utils.updateUser = function (profile, token, done) {
 utils.linkUser = function (profile, token, done) {
  // user already exists and is logged in, we have to link accounts
   req.user.asana.token = token;
-  console.log('User exists. Saving new token...', req.user.asana.token);
   user.save(function(err) {
     if (err) { throw err; }
     return done(null, user);

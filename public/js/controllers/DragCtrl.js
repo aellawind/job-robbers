@@ -2,7 +2,6 @@ app.controller('DragController', function ($scope, $modal, Students, statusOrder
 
   $scope.undoLast = dragHelper.undoLast;
 
-  console.log(dragHelper.history.length);
 
   Students.fetchTasks()
     .then(function(data){

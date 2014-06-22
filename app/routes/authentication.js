@@ -1,9 +1,9 @@
 var AsanaStrategy = require('passport-asana').Strategy;
-var config        = require('../../config/asanaKeys.js');
+var config    = require('../../config/asanaKeys.js');
 var utils     = require('../utils/utils.js');
-var request       = require('request');
+var request   = require('request');
 
-var User = require('../models/User.js');
+var User      = require('../models/User.js');
 
 var Authentication = function (app, passport) {
 
@@ -38,7 +38,6 @@ var Authentication = function (app, passport) {
     passport.authenticate('Asana', { failureRedirect: '/login' }),
     function (req, res) {
       console.log('Successfully logged in. Redirecting user.');
-      // res.redirect('/#/student/' + req.user._id);
       res.redirect('/#/drag');
     }
   );
