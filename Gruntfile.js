@@ -5,28 +5,35 @@ module.exports = function(grunt) {
     concat: {
     },
 
-    // mochaTest: {
-    //   test: {
-    //     options: {
-    //       reporter: 'spec'
-    //     },
-    //     src: ['test/**/*.js']
-    //   }
-    // },
+    mochaTest: {
+      test: {
+        options: {
+          reporter: 'spec'
+        },
+        src: ['testing/unit testing/server testing/mochaTestSpec.js']
+      }
+    },
 
     nodemon: {
       dev: {
-        script: 'app.js'
+        script: 'server.js'
       },
       options: {
         ignore: ['node_modules/**',
         'bower_components/**',
-        'public/**'],
+        'public/**',
+        'testing/**'],
         watchedExtensions: ['js']
       }
     },
 
     uglify: {//need to use ngmin for angular minification
+    },
+    karma: {
+      unit: {
+        configFile: './testing/unit testing/front end testing/apptesting.config.js',
+        autoWatch: true
+      }
     },
 
     jshint: {
@@ -44,7 +51,7 @@ module.exports = function(grunt) {
     },
     concurrent: {
       target: {
-        tasks: ['watch', 'nodemon'],
+        tasks: ['watch', 'nodemon', 'test', 'karma'],
         options: {
           logConcurrentOutput: true
         }
@@ -66,13 +73,12 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: [
-          'public/javascripts/*.js',
-          'app.js',
-          'server/*.js'
+          'server.js',
+          'app/**/*.js',
+          'config/**/*.js'
         ],
         tasks: [
-          'concat',
-          'uglify'
+          'mochaTest'
         ]
       },
       // css: {
@@ -97,6 +103,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-nodemon');
+  grunt.loadNpmTasks('grunt-karma');
 
 
   ////////////////////////////////////////////////////
@@ -109,8 +116,10 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'jshint',
-    // 'less',
     'concurrent'
+    // 'test'
+    // 'less',
+    // 'nodemon'
   ]);
 
   grunt.registerTask('deploy', [

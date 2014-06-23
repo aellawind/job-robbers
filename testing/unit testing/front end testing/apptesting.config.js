@@ -5,7 +5,7 @@ module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '../public',
+    basePath: '../../../public',
 
 
     // frameworks to use
@@ -19,7 +19,7 @@ module.exports = function(config) {
       'libs/angular-route/angular-route.js',
       'libs/angular-mocks/angular-mocks.js',
       'js/**/*.js',
-      '../testing/*.js'
+      '../testing/unit testing/front end testing/*.js'
     ],
 
 
