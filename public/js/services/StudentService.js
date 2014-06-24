@@ -25,6 +25,7 @@ app.factory('Students', function ($http, $timeout, $location, $rootScope, $q) {
       }
     });
 
+    Students.tasks = results;
     return results;
   };
 
@@ -33,6 +34,8 @@ app.factory('Students', function ($http, $timeout, $location, $rootScope, $q) {
   };
   
   var Students = {};
+
+  Students.tasks = null;
 
   Students.fetchTasks = function () {
     return $http.get('/users')
@@ -54,22 +57,6 @@ app.factory('Students', function ($http, $timeout, $location, $rootScope, $q) {
       alert('Nope');
     }
   };
-
-  Students.updateTask = function (task, headerId) {
-    // insert task that's clicked 
-    // insert headerId that it was moved to
-  };
-
-  Students.fetchComments = function (task) {
-    return $http.get('/task/' + task.id + '/stories')
-      .then(function (d) {
-        return d.data;
-      });
-  };
-
-  Students.addComment = function (task, comment) {
-    return $http.post('/task/' + task.id + '/stories', { comment: comment })
-  }
 
   Students.logout = function () {
     return $http.get('/unlink/asana')

@@ -3,8 +3,7 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
 	$routeProvider
 
 	.when('/', {
-		templateUrl: 'views/home.html',
-		controller: 'HomeController'
+		templateUrl: 'views/home.html'
 	})
 
 	.when('/student', {
@@ -12,10 +11,7 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
 		controller: 'StudentController',
 		resolve: {
 			data: function (Students) {
-				return Students.fetchTasks()
-					.then(function (d) {
-						return d;
-					})
+				return Students.fetchTasks();
 			}
 		}
 	})

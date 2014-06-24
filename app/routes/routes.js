@@ -63,7 +63,7 @@ module.exports = function (app) {
 
           /* ==== SET '$$' AS SECRET CODE FOR JOBCOP PARSER TO INTERPRET AS A SYSTEM MOVEMENT ==== */
           /* ==== Asana API currently does not support system comments when changes are made via their API ==== */
-          var text = '$$' + user.asana.name + ' moved from ' + data.origin.name + ' to ' + data.dest.name + ' (' + user.asana.name + ')';              
+          var text = '$$moved from ' + data.origin.name + ' to ' + data.dest.name;              
          
           var options2 = {};
           options2.method  = 'POST';
@@ -107,7 +107,7 @@ module.exports = function (app) {
               console.log('Currently at: ', user.progress[index].name);
                 
             if (index !== to) {
-              var text = '$$' + user.asana.name + ' moved from ' + user.progress[index].name + ' to ' + user.progress[index+1].name + ' (' + user.asana.name + ')';
+              var text = '$$moved from ' + user.progress[index].name + ' to ' + user.progress[index+1].name;
     
               var options2 = {};
               options2.method  = 'POST';
@@ -129,8 +129,8 @@ module.exports = function (app) {
     });
   });
 
-  /* === FETCH TASK COMMENTS FOR MODAL === */
-  app.get('/task/:taskId/stories', function (req, res) {
+  /* ==== FETCH TASK COMMENTS FOR MODAL ==== */
+  app.get('/tasks/:taskId/stories', function (req, res) {
     User.findOne({ _id: req.user._id }, function (err, user) {
       if (err) { throw err; }
       
@@ -145,14 +145,31 @@ module.exports = function (app) {
     });
   });
 
-  /* === ADD NEW COMMENT TO TASK === */
-  app.post('/task/:taskId/stories', function (req, res) {
+  /* ==== ADD NEW COMMENT TO TASK ==== */
+  app.post('/tasks/:taskId/stories', function (req, res) {
     User.findOne({ _id: req.user._id }, function (err, user) {
       var options     = {};
       options.method  = 'POST';
       options.url     = asanaURL + '/tasks/' + req.params.taskId + '/stories';
       options.headers = { 'Authorization' : 'Bearer ' + user.asana.token };
-      options.form    = { 'text' : req.body.comment, 'type' : 'system' };
+      options.form    = { 'text' : req.body.comment };
+
+      request(options, function (err, httpResponse, body) {
+        err ? res.send(404) : res.send(200);
+      });
+    });
+  });
+
+  /* ==== COMPLETE TASK ==== */
+  app.put('/tasks/:taskId', function (req, res) {
+    User.findOne({ _id: req.user._id }, function (err, user) {
+      if (err) { res.send(404); }
+
+      var options     = {};
+      options.method  = 'PUT';
+      options.url     = asanaURL + '/tasks/' + req.params.taskId;
+      options.headers = { 'Authorization' : 'Bearer ' + user.asana.token };
+      options.form    = { 'completed' : 'true' };
 
       request(options, function (err, httpResponse, body) {
         err ? res.send(404) : res.send(200);

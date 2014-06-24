@@ -1,4 +1,3 @@
-
 //Helper service used to support the drag and drop feature
 app.service('dragHelper', function($http, statusOrder, $timeout, $document){
 
@@ -15,7 +14,7 @@ app.service('dragHelper', function($http, statusOrder, $timeout, $document){
       that.history.shift()
       console.log('history stack: ', that.history);
     }
-    this.history.push({timeout:$timeout(callback, 10000), data: data});
+    this.history.push({timeout:$timeout(function () { callback(data); }, 10000), data: data});
   };
 
   //property that will be used to store a reference to the object being dragged
