@@ -24,12 +24,11 @@ mongoose.connection.once('open', function() { console.log("Mongo DB connected!")
 app.use(express.static(__dirname + '/public'));     // set the static files location /public/img will be /img for users
 
 /* ==== AUTHENTICATION ==== */
-// set up our express application
 app.use(morgan('dev'));                     // log every request to the console
 app.use(cookieParser());                    // read cookies (needed for auth)
 app.use(bodyParser());                      // get information from html forms
 
-app.use(session({ secret: 'delectable' }));   // session secret
+app.use(session({ secret: 'delectable' })); // session secret
 app.use(passport.initialize());
 app.use(passport.session());                // persistent login sessions
 app.use(flash());                           // use connect-flash for flash messages stored in session

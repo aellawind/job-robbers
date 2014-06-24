@@ -3,8 +3,7 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
 	$routeProvider
 
 	.when('/', {
-		templateUrl: 'views/home.html',
-		controller: 'HomeController'
+		templateUrl: 'views/home.html'
 	})
 
 	.when('/student', {

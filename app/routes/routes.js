@@ -46,6 +46,7 @@ module.exports = function (app) {
 
       var data = req.body
 
+      console.log(req.body, '##########');
       var options = {};
       options.method  = 'POST';
       options.url     = asanaURL + '/tasks/' + data.company.id + '/addProject';
