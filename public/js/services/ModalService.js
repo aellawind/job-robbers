@@ -5,10 +5,11 @@ app.factory('ModalService', function ($http) {
   var parseSysStory = function (comments) {
     
     comments.forEach(function (comment) {
-      // comment['text'].substr(0, 2) === '$$' ? comment['type'] = 'system' : comment['type'] = 'comment'
-      (comment['text'].substr(0, 2) === '$$' || 
+      (comment['text'].substr(0, 2) === '$$'       || 
        comment['text'].substr(0, 8) === 'added to' || 
-       comment['text'] === 'completed this task') ? comment['type'] = 'system' : comment['type'] = 'comment'; 
+       comment['text'] === 'completed this task')     ? comment['type'] = 'system' : comment['type'] = 'comment'; 
+
+      if (comment['text'].substr(0, 2) === '$$') { comment['text'] = comment['text'].slice(2); }
     });
 
     console.log(comments);

@@ -9,6 +9,7 @@
 <div class="modal-body">
   <p ng-repeat='comment in comments' ng-model="comment"> 
   <strong ng-show='{{ comment.type === "comment" ? true : false }}'>{{ comment.created_by.name }}: </strong> 
+  <em ng-show='{{ comment.type === "comment" ? false : true }}'>{{ comment.created_by.name }} </em> 
   <em>{{ comment.text }}</em> 
   </p>
 </div>

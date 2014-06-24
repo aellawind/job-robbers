@@ -107,7 +107,7 @@ module.exports = function (app) {
               console.log('Currently at: ', user.progress[index].name);
                 
             if (index !== to) {
-              var text = '$$' + user.asana.name + ' moved from ' + user.progress[index].name + ' to ' + user.progress[index+1].name + ' (' + user.asana.name + ')';
+              var text = '$$moved from ' + user.progress[index].name + ' to ' + user.progress[index+1].name;
     
               var options2 = {};
               options2.method  = 'POST';
