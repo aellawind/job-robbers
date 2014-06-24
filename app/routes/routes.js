@@ -146,7 +146,7 @@ module.exports = function (app) {
   });
 
   /* ==== ADD NEW COMMENT TO TASK ==== */
-  app.put('/tasks/:taskId/stories', function (req, res) {
+  app.post('/tasks/:taskId/stories', function (req, res) {
     User.findOne({ _id: req.user._id }, function (err, user) {
       var options     = {};
       options.method  = 'POST';

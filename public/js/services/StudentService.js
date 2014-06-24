@@ -25,6 +25,7 @@ app.factory('Students', function ($http, $timeout, $location, $rootScope, $q) {
       }
     });
 
+    Students.tasks = results;
     return results;
   };
 
@@ -33,6 +34,8 @@ app.factory('Students', function ($http, $timeout, $location, $rootScope, $q) {
   };
   
   var Students = {};
+
+  Students.tasks = null;
 
   Students.fetchTasks = function () {
     return $http.get('/users')
@@ -53,11 +56,6 @@ app.factory('Students', function ($http, $timeout, $location, $rootScope, $q) {
     } else {
       alert('Nope');
     }
-  };
-
-  Students.updateTask = function (task, headerId) {
-    // insert task that's clicked 
-    // insert headerId that it was moved to
   };
 
   Students.logout = function () {

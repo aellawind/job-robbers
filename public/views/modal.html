@@ -1,4 +1,4 @@
- <div class="modal-header" ng-model='task'>
+ <div class="modal-header" ng-model='companyHeader'>
   <h3 class="modal-title">
     <input type="checkbox" class='completeTask' ng-click='taskCompleted(task)'> 
     {{ task.name }}   
@@ -7,7 +7,8 @@
 </div>
 
 <div class="modal-body">
-  <p ng-repeat='comment in comments' ng-model="task"> {{ comment.created_by.name }}: {{ comment.text }} </p>
+  <p ng-repeat='comment in comments' ng-model="comment"> {{ comment.created_by.name }}: {{ comment.text }} </p>
 </div>
 
-<input type="text" class="addCommentBox" ng-model="commentAdd" ng-keypress="addComment($event, commentAdd)" placeholder="How's it going?">
+<input type="text" class="addCommentBox" ng-model="commentAdd" ng-keypress="addComment($event, commentAdd, this)" placeholder="How's it going?">
+{{commentAdd}}
