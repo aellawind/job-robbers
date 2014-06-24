@@ -23,6 +23,12 @@ body {
     height: 18px;
 }
 
+.addCommentBox {
+  width: 550px;
+  margin: 10px 25px;
+  border-radius: 5px;
+}
+
 /*body { padding-top:30px; }
 */
 .dr {
