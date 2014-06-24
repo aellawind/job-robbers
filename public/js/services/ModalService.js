@@ -2,6 +2,9 @@ app.factory('ModalService', function ($http) {
 
   var ModalService = {};
 
+
+  // due to Asana API not automatically detecting API changes as system stories,
+  // $$ is used by dashboard && student parsers to classify comments as such
   var parseSysStory = function (comments) {
     
     comments.forEach(function (comment) {
@@ -11,8 +14,6 @@ app.factory('ModalService', function ($http) {
 
       if (comment['text'].substr(0, 2) === '$$') { comment['text'] = comment['text'].slice(2); }
     });
-
-    console.log(comments);
     return comments;
   };
 
