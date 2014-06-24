@@ -63,7 +63,7 @@ module.exports = function (app) {
 
           /* ==== SET '$$' AS SECRET CODE FOR JOBCOP PARSER TO INTERPRET AS A SYSTEM MOVEMENT ==== */
           /* ==== Asana API currently does not support system comments when changes are made via their API ==== */
-          var text = '$$' + user.asana.name + ' moved from ' + data.origin.name + ' to ' + data.dest.name + ' (' + user.asana.name + ')';              
+          var text = '$$moved from ' + data.origin.name + ' to ' + data.dest.name;              
          
           var options2 = {};
           options2.method  = 'POST';
