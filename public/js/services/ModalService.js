@@ -25,6 +25,5 @@ ModalService.fetchComments = function (task) {
     });
 };
 
-
 return ModalService;
 });

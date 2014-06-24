@@ -172,7 +172,6 @@ module.exports = function (app) {
       options.form    = { 'completed' : 'true' };
 
       request(options, function (err, httpResponse, body) {
-        console.log(JSON.parse(body));
         err ? res.send(404) : res.send(200);
       });
     });
