@@ -1,7 +1,7 @@
  <div class="modal-header" ng-model='companyHeader'>
   <h3 class="modal-title">
-    <input type="checkbox" class='completeTask' ng-click='taskCompleted(task)'> 
-    {{ task.name }}   
+    <input ng-if="!checked" type="checkbox" class='completeTask' ng-click='taskCompleted(task)'> 
+    {{ task.name }} 
   </h3>
   <small>{{ task.notes }}</small>
 </div>
@@ -11,4 +11,3 @@
 </div>
 
 <input type="text" class="addCommentBox" ng-model="commentAdd" ng-keypress="addComment($event, commentAdd, this)" placeholder="How's it going?">
-{{commentAdd}}

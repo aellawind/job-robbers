@@ -3,8 +3,7 @@ app.factory('ModalService', function ($http) {
   var ModalService = {};
 
   ModalService.addComment = function (task, comment) {
-    return $http.post('/tasks/' + task.id + '/stories', { comment: comment })
-      .then(ModalService.fetchComments(task));
+    return $http.post('/tasks/' + task.id + '/stories', { comment: comment });
   };
 
   ModalService.taskCompleted = function (task) {
