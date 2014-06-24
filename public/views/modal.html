@@ -1,10 +1,12 @@
  <div class="modal-header" ng-model='task'>
-  <h3 class="modal-title">{{ task.name }}</h3>
+  <h3 class="modal-title">
+    <input type="checkbox" class='completeTask' ng-click='taskCompleted(comment)'> 
+    {{ task.name }}   
+  </h3>
   <small>{{ task.notes }}</small>
 </div>
 
 <div class="modal-body" ng-repeat='comment in comments'>
-  <input type="checkbox" ng-click='taskCompleted(comment)'>
   <p> {{ comment.created_by.name }}: {{ comment.text }} </p>
 </div>
 

@@ -18,6 +18,11 @@ body {
     font-size:13px;
 }
 
+.completeTask {
+    /*width: 17px;*/
+    height: 18px;
+}
+
 /*body { padding-top:30px; }
 */
 .dr {

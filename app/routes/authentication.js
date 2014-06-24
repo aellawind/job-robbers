@@ -56,11 +56,7 @@ var Authentication = function (app, passport) {
 };
 
 Authentication.check = function (req, res, next) {
-    if (req.isAuthenticated()) {
-        next();
-    } else {
-        res.redirect('/');
-    }
+  req.isAuthenticated ? next() : res.redirect('/login');
 };
 
 module.exports = Authentication;
