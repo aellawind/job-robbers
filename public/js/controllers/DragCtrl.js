@@ -29,8 +29,8 @@ app.controller('DragController', function ($scope, $modal, Students, statusOrder
       controller: 'ModalController',
       size: '',
       resolve: {
-        comments: function (Students) {
-          return Students.fetchComments(task)
+        comments: function (ModalService) {
+          return ModalService.fetchComments(task)
           .then(function (comments) {
             return [comments, task];
           });

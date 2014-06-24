@@ -129,8 +129,8 @@ module.exports = function (app) {
     });
   });
 
-  /* === FETCH TASK COMMENTS FOR MODAL === */
-  app.get('/task/:taskId/stories', function (req, res) {
+  /* ==== FETCH TASK COMMENTS FOR MODAL ==== */
+  app.get('/tasks/:taskId/stories', function (req, res) {
     User.findOne({ _id: req.user._id }, function (err, user) {
       if (err) { throw err; }
       
@@ -145,16 +145,34 @@ module.exports = function (app) {
     });
   });
 
-  /* === ADD NEW COMMENT TO TASK === */
-  app.post('/task/:taskId/stories', function (req, res) {
+  /* ==== ADD NEW COMMENT TO TASK ==== */
+  app.put('/tasks/:taskId/stories', function (req, res) {
     User.findOne({ _id: req.user._id }, function (err, user) {
       var options     = {};
       options.method  = 'POST';
       options.url     = asanaURL + '/tasks/' + req.params.taskId + '/stories';
       options.headers = { 'Authorization' : 'Bearer ' + user.asana.token };
-      options.form    = { 'text' : req.body.comment, 'type' : 'system' };
+      options.form    = { 'text' : req.body.comment };
 
       request(options, function (err, httpResponse, body) {
+        err ? res.send(404) : res.send(200);
+      });
+    });
+  });
+
+  /* ==== COMPLETE TASK ==== */
+  app.put('/tasks/:taskId', function (req, res) {
+    User.findOne({ _id: req.user._id }, function (err, user) {
+      if (err) { res.send(404); }
+
+      var options     = {};
+      options.method  = 'PUT';
+      options.url     = asanaURL + '/tasks/' + req.params.taskId;
+      options.headers = { 'Authorization' : 'Bearer ' + user.asana.token };
+      options.form    = { 'completed' : 'true' };
+
+      request(options, function (err, httpResponse, body) {
+        console.log(JSON.parse(body));
         err ? res.send(404) : res.send(200);
       });
     });
