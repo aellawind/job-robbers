@@ -38,7 +38,7 @@ var Authentication = function (app, passport) {
     passport.authenticate('Asana', { failureRedirect: '/login' }),
     function (req, res) {
       console.log('Successfully logged in. Redirecting user.');
-      res.redirect('/#/drag');
+      res.redirect('/#/home');
     }
   );
 
@@ -47,10 +47,10 @@ var Authentication = function (app, passport) {
       user.asana.token = undefined;
       user.save(function(err) {
         console.log(user, ' has been successfully logged out.');
-        res.send(200);
+        req.logout(); 
+        res.redirect('/');
       });
     })
-    req.logout();
   });
 
 };

@@ -1,5 +1,5 @@
 //Directive will add listeners to the status bins
-app.directive('boxListeners', function(dragHelper, checkValidDrop){
+app.directive('boxListeners', function(HomeService, checkValidDrop){
   return {
     replace: false,
     restrict: 'AE',
@@ -11,7 +11,7 @@ app.directive('boxListeners', function(dragHelper, checkValidDrop){
 
         //Get the statusOrder number for the target and source bins
         var targetStatusOrder = this.getAttribute('statusOrder');
-        var sourceStatusOrder = dragHelper.element.getAttribute('statusOrder');
+        var sourceStatusOrder = HomeService.element.getAttribute('statusOrder');
 
         //run the checkValidDrop service to see if the drop is legal. if legal add valid css class
         if (checkValidDrop(sourceStatusOrder, targetStatusOrder)){
@@ -59,7 +59,7 @@ app.directive('boxListeners', function(dragHelper, checkValidDrop){
 
         //Get the statusOrder number for the target and source bins
         var targetStatusOrder = this.getAttribute('statusOrder');
-        var sourceStatusOrder = dragHelper.element.getAttribute('statusOrder');
+        var sourceStatusOrder = HomeService.element.getAttribute('statusOrder');
 
         //remove css classes
         this.classList.remove('dr-over-valid');
@@ -75,7 +75,7 @@ app.directive('boxListeners', function(dragHelper, checkValidDrop){
           e.dataTransfer.dropEffect = 'move';
 
           //Invoke callback function on successful drop and send in source, company, and target data
-          dragHelper.dropHandler
+          HomeService.dropHandler
           ({
             origin:
               {
@@ -95,13 +95,13 @@ app.directive('boxListeners', function(dragHelper, checkValidDrop){
           });
 
           //update the statusId and statusName attributes on the company object to reflect the new bin
-          dragHelper.element.setAttribute('statusId', this.getAttribute('statusId'));
-          dragHelper.element.setAttribute('statusName', this.getAttribute('statusName'));
-          dragHelper.element.setAttribute('statusOrder', this.getAttribute('statusOrder'));
+          HomeService.element.setAttribute('statusId', this.getAttribute('statusId'));
+          HomeService.element.setAttribute('statusName', this.getAttribute('statusName'));
+          HomeService.element.setAttribute('statusOrder', this.getAttribute('statusOrder'));
 
           //Append the object being moved to the target status bin
-          this.querySelector('#companyContainer').appendChild(dragHelper.element);
-          // this.appendChild(dragHelper.element);
+          this.querySelector('#companyContainer').appendChild(HomeService.element);
+          // this.appendChild(HomeService.element);
           this.classList.remove('dr-over');
         }
         return false;
@@ -118,7 +118,7 @@ app.directive('boxListeners', function(dragHelper, checkValidDrop){
 });
 
 //Directive will add listeners to the draggable company objects
-app.directive('draggableItem', function(dragHelper){
+app.directive('draggableItem', function(HomeService){
   return {
     replace: true,
     restrict: 'AE',
@@ -128,8 +128,8 @@ app.directive('draggableItem', function(dragHelper){
       //Callback to handle the dragstart event on the company object
       var dragstartHandler = function(e){
 
-        //Save a reference to the element to a property in dragHelper
-        dragHelper.element = this;
+        //Save a reference to the element to a property in HomeService
+        HomeService.element = this;
 
         //Add data about this object to the dataTransfer object
         e.dataTransfer.setData('companyId', this.getAttribute('companyId'));

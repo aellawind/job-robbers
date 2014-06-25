@@ -1,5 +1,5 @@
 //Helper service used to support the drag and drop feature
-app.service('dragHelper', function($http, statusOrder, $timeout, $document){
+app.service('HomeService', function($http, statusOrder, $timeout, $document){
 
   console.log(statusOrder);
 

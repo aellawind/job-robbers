@@ -32,22 +32,29 @@ module.exports = function (app) {
       options.method  = 'POST';
       options.url     = 'https://app.asana.com/api/1.0/workspaces/' + hr.workspace + '/tasks';
       options.headers = { 'Authorization' : 'Bearer ' + user.asana.token };
+      options.form    = {
+        'name'          : req.body.companyName,
+        'projects[0]'   : user.projectId,
+        'followers[0]'  : user._id,
+        'followers[1]'  : hr.followers[0].id,
+        'followers[2]'  : hr.followers[1].id
+      };
 
       request(options, function (err, httpResponse, body) {
         // SEND NOTIFICATION E-MAIL TO HIRING TEAM 
-        notifyHiringTeam(user, req.body.companyName);
+        // notifyHiringTeam(user, req.body.companyName);
         var task = JSON.parse(body).data;
 
         var moveOptions     = {};
         moveOptions.method  = 'POST';
         moveOptions.url     = 'https://app.asana.com/api/1.0/tasks/' + task.id + '/addProject';
         moveOptions.headers = { 'Authorization' : 'Bearer ' + user.asana.token };
-        moveOptions.fom     = {
-          'project' : user.projectId,
+        moveOptions.form    = {
+          'project'      : user.projectId,
           'insert_after' : user.progress[1].id          
         };
 
-        request(moveOptions, function (err, httpResponse, body) {
+        request(moveOptions, function (err, httpResponse, response) {
           res.send(200);
         });
       });
