@@ -55,7 +55,7 @@ module.exports = function (app) {
         };
 
         request(moveOptions, function (err, httpResponse, response) {
-          res.redirect('/#/home');
+          res.send(200);
         });
       });
     });
