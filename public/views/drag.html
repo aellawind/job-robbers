@@ -1,11 +1,20 @@
   <section id="container" class="">
     <!--header start-->
-    <header class="header white-bg">
+    <header ng-controller="HeaderController" class="header white-bg">
       <div class="sidebar-toggle-box">
       </div>
       <!--logo start-->
       <a href="index.html" class="logo" >Hack<span>Reactor</span></a>
       <!--logo end-->
+        
+        <div class="horizontal-menu navbar-collapse collapse ">
+            <ul class="nav navbar-nav">
+              <li><a href="#/drag">Dashboard</a></li>
+              <li><a href="">Add Company</a></li>
+              <li><a href="/unlink/asana" ng-click="logout()">Logout</a></li>
+            </ul>
+        </div>
+
       </div>
     </header>
     <!--header end-->
