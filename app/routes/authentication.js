@@ -47,10 +47,10 @@ var Authentication = function (app, passport) {
       user.asana.token = undefined;
       user.save(function(err) {
         console.log(user, ' has been successfully logged out.');
-        res.send(200);
+        req.logout(); 
+        res.redirect('/');
       });
     })
-    req.logout();
   });
 
 };
