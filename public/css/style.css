@@ -18,6 +18,12 @@ body {
     font-size:13px;
 }
 
+.addCompanyBox {
+    border-radius: 5px;
+    width: 559px;
+    margin: 0 auto;
+}
+
 .completeTask {
     /*width: 17px;*/
     height: 18px;
