@@ -1,14 +1,13 @@
-app.controller('HeaderController', function ($scope, Students) {
+app.controller('HeaderController', function ($scope, $modal, Students) {
 
   $scope.logout = function () {
     Students.logout();
   };
 
-  $scope.addNewCompany = function () {
-    Students.addNewCompany($scope.companyName)
-      .then(function (d) {
-        // append the new company to Leads
-      });
+  $scope.renderCompanyModal = function () {
+    var instance = $modal.open({
+      templateUrl: 'views/company.html',
+      controller: 'CompanyModalController'
+    });
   };
-
 });
