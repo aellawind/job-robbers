@@ -3,22 +3,12 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
 	$routeProvider
 
 	.when('/', {
-		templateUrl: 'views/home.html'
+		templateUrl: 'views/login.html'
 	})
 
-	.when('/student', {
-		templateUrl: 'views/student.html',
-		controller: 'StudentController',
-		resolve: {
-			data: function (Students) {
-				return Students.fetchTasks();
-			}
-		}
-	})
-
-	.when('/drag',{
-		templateUrl: 'views/drag.html',
-		controller: 'DragController'
+	.when('/home',{
+		templateUrl: 'views/home.html',
+		controller: 'HomeController'
 	})
 
 }]);

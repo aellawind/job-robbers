@@ -1,4 +1,4 @@
-app.controller('DragController', function ($scope, $modal, Students, statusOrder, dragHelper) {
+app.controller('HomeController', function ($scope, $modal, Students, statusOrder, HomeService) {
 
   $scope.undoLast = dragHelper.undoLast;
 
