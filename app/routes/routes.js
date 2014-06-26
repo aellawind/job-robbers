@@ -1,4 +1,5 @@
 var request         = require('request');
+
 var Authentication  = require('./authentication.js');
 var User            = require('../models/User.js');
 var utils           = require('../utils/utils.js');
@@ -16,7 +17,7 @@ module.exports = function (app) {
       options.headers = {
         'Authorization' : 'Bearer ' + user.asana.token
       };
-      console.log(options);
+
       request(options, function (err, response, projects) {
         projects = JSON.parse(projects).data;
         projects.forEach(function (project) {
