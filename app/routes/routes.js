@@ -2,8 +2,7 @@ var request         = require('request');
 var Authentication  = require('./authentication.js');
 var User            = require('../models/User.js');
 var utils           = require('../utils/utils.js');
-
-var asanaURL        = 'https://app.asana.com/api/1.0';
+var asanaAPI        = require('../utils/asanaApiRoutes.js');
 
 
 module.exports = function (app) {
@@ -37,7 +36,6 @@ module.exports = function (app) {
       });
     });
   });
-
 
   /* ==== UPDATE TASK TO MOVE TO NEW HEADER ==== */
   app.post('/user/update', function (req, res) {
