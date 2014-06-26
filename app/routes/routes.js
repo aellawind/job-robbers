@@ -102,7 +102,6 @@ module.exports = function (app) {
 
           request(options, function (err, httpResponse, body) {
             if (err) { res.send(err); }
-
               console.log('##########################################');
               console.log('Currently at: ', user.progress[index].name);
                 
