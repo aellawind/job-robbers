@@ -1,5 +1,4 @@
 module.exports = {
-  workspace : '1213745087037',
 
   followers : 
   [

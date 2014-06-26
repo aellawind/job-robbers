@@ -42,7 +42,7 @@ var Authentication = function (app, passport) {
     }
   );
 
-  app.get('/unlink/asana', function(req, res) {
+  app.get('/unlink/asana', Authentication.check, function(req, res) {
     User.findOne({ _id: req.user._id }, function (err, user) {
       user.asana.token = undefined;
       user.save(function(err) {
