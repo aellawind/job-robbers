@@ -12,11 +12,11 @@ module.exports = function (app) {
     User.findOne({ _id: req.user._id }, function (err, user) {
       var options     = {};
       options.method  = 'GET';
-      options.url     = asanaURL + '/workspaces/1213745087037/projects'
+      options.url     = asanaAPI['projects']();
       options.headers = {
         'Authorization' : 'Bearer ' + user.asana.token
       };
-
+      console.log(options);
       request(options, function (err, response, projects) {
         projects = JSON.parse(projects).data;
         projects.forEach(function (project) {
@@ -25,7 +25,7 @@ module.exports = function (app) {
           if (project.name === user.asana.name) {  
             user.projectId = project.id;
             user.save();
-            options.url = asanaURL + '/projects/' + project.id + '/tasks?opt_mobile=true';
+            options.url = asanaAPI['user'](project.id);
 
             request(options, function (err, response, tasks) {
               if (!user.progress.length) { utils.saveProgress(JSON.parse(tasks).data, user); }
@@ -46,7 +46,7 @@ module.exports = function (app) {
 
       var options = {};
       options.method  = 'POST';
-      options.url     = asanaURL + '/tasks/' + data.company.id + '/addProject';
+      options.url     = asanaAPI['addTask'](data.company.id);
       options.headers = { 'Authorization' : 'Bearer ' + user.asana.token }
 
       /* ==== IF GRAVEYARD, SEND TO GRAVEYARD ==== */
@@ -65,7 +65,7 @@ module.exports = function (app) {
          
           var options2 = {};
           options2.method  = 'POST';
-          options2.url     = asanaURL + '/tasks/' + data.company.id + '/stories';
+          options2.url     = asanaAPI['fetchOrAddComments'](data.company.id);
           options2.headers = { 'Authorization' : 'Bearer ' + user.asana.token };
           options2.form    = { 'text' : text };
 
@@ -108,7 +108,7 @@ module.exports = function (app) {
     
               var options2 = {};
               options2.method  = 'POST';
-              options2.url     = asanaURL + '/tasks/' + data.company.id + '/stories';
+              options2.url     = asanaAPI['fetchOrAddComments'](data.company.id);
               options2.headers = { 'Authorization' : 'Bearer ' + user.asana.token };
               options2.form    = { 'text' : text };
 
@@ -133,7 +133,7 @@ module.exports = function (app) {
       
       var options = {};
       options.method  = 'GET';
-      options.url     = asanaURL + '/tasks/' + req.params.taskId + '/stories';
+      options.url     = asanaAPI['fetchOrAddComments'](req.params.taskId);
       options.headers = { 'Authorization' : 'Bearer ' + user.asana.token };
 
       request(options, function (err, httpResponse, body) {
@@ -147,7 +147,7 @@ module.exports = function (app) {
     User.findOne({ _id: req.user._id }, function (err, user) {
       var options     = {};
       options.method  = 'POST';
-      options.url     = asanaURL + '/tasks/' + req.params.taskId + '/stories';
+      options.url     = asanaAPI['fetchOrAddComments'](req.params.taskId);
       options.headers = { 'Authorization' : 'Bearer ' + user.asana.token };
       options.form    = { 'text' : req.body.comment };
 
@@ -164,7 +164,7 @@ module.exports = function (app) {
 
       var options     = {};
       options.method  = 'PUT';
-      options.url     = asanaURL + '/tasks/' + req.params.taskId;
+      options.url     = asanaAPI['completeTask'](req.params.taskId);
       options.headers = { 'Authorization' : 'Bearer ' + user.asana.token };
       options.form    = { 'completed' : 'true' };
 
