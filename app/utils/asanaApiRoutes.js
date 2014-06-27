@@ -18,7 +18,7 @@ module.exports = {
   },
 
   addCompany          : function () {
-    return asanaMain.APIUrl + '/' + asanaMain.workspaceId + '/tasks';
+    return asanaMain.APIUrl + '/workspaces/' + asanaMain.workspaceId + '/tasks';
   },
 
   addTask             : function (companyId) {
