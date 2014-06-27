@@ -9,7 +9,7 @@ var asanaAPI        = require('../utils/asanaApiRoutes.js');
 module.exports = function (app) {
 
   /* ==== FETCH SPECIFIC USER & GRAB TASKS ==== */
-  app.get('/users', function (req, res) {
+  app.get('/users', Authentication.check, function (req, res) {
     User.findOne({ _id: req.user._id }, function (err, user) {
       var options     = {};
       options.method  = 'GET';
@@ -39,7 +39,7 @@ module.exports = function (app) {
   });
 
   /* ==== UPDATE TASK TO MOVE TO NEW HEADER ==== */
-  app.post('/user/update', function (req, res) {
+  app.post('/user/update', Authentication.check, function (req, res) {
     User.findOne({ _id: req.user._id }, function (err, user) {
       if (err) { throw err; }
 
@@ -128,7 +128,7 @@ module.exports = function (app) {
   });
 
   /* ==== FETCH TASK COMMENTS FOR MODAL ==== */
-  app.get('/tasks/:taskId/stories', function (req, res) {
+  app.get('/tasks/:taskId/stories', Authentication.check, function (req, res) {
     User.findOne({ _id: req.user._id }, function (err, user) {
       if (err) { throw err; }
       
@@ -144,7 +144,7 @@ module.exports = function (app) {
   });
 
   /* ==== ADD NEW COMMENT TO TASK ==== */
-  app.post('/tasks/:taskId/stories', function (req, res) {
+  app.post('/tasks/:taskId/stories', Authentication.check, function (req, res) {
     User.findOne({ _id: req.user._id }, function (err, user) {
       var options     = {};
       options.method  = 'POST';
@@ -159,7 +159,7 @@ module.exports = function (app) {
   });
 
   /* ==== COMPLETE TASK ==== */
-  app.put('/tasks/:taskId', function (req, res) {
+  app.put('/tasks/:taskId', Authentication.check, function (req, res) {
     User.findOne({ _id: req.user._id }, function (err, user) {
       if (err) { res.send(404); }
 
@@ -175,4 +175,7 @@ module.exports = function (app) {
     });
   });
 
+  app.get('*', function (req, res) {
+    res.redirect('/');
+  })
 };

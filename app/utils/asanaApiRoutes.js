@@ -5,12 +5,20 @@ var asanaMain  = {
 
 module.exports = {
 
+  followers           : 
+  [ { id: 6384579925796, name: 'Ruan Pethiyagoda' },
+    { id: 12218806480331, name: 'Mike Adams' } ],
+
   projects            : function () {
     return asanaMain.APIUrl + '/workspaces/' + asanaMain.workspaceId + '/projects'
   },
 
   user                : function (projectId) {
     return asanaMain.APIUrl + '/projects/' + projectId + '/tasks?opt_mobile=true';
+  },
+
+  addCompany          : function () {
+    return asanaMain.APIUrl + '/workspaces/' + asanaMain.workspaceId + '/tasks';
   },
 
   addTask             : function (companyId) {
