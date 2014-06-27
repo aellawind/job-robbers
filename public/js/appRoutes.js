@@ -11,4 +11,8 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
 		controller: 'HomeController'
 	})
 
+  .otherwise({
+    redirectTo: '/'
+  });
+
 }]);
