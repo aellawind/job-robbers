@@ -54,12 +54,15 @@ var Authentication  = function (app, passport) {
           if (project.name === req.user.asana.name) { isHackReactorStudent = true; }
         }); 
 
-        isHackReactorStudent ? res.redirect('/#/home') : 
-          req.user.asana.token = undefined;
-          req.user.save(function (err, user) {
-            req.logout();
-            res.redirect('/#/404');       
-          });
+       
+        if (isHackReactorStudent) { res.redirect('/#/home'); }
+          else {
+            req.user.asana.token = undefined;
+            req.user.save(function (err, user) {
+              req.logout();
+              res.redirect('/#/404');       
+            });            
+          }
       });
 
     }
