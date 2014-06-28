@@ -29,8 +29,10 @@ module.exports = {
     return asanaMain.APIUrl + '/tasks/' + companyId + '/stories';
   },
 
-  completeTask       : function (taskId) {
+  completeTask        : function (taskId) {
     return asanaMain.APIUrl + '/tasks/' + taskId
-  }
+  },
+
+  hiringTeam          : 
 
 };
