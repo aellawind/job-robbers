@@ -1,16 +1,20 @@
   <section id="container" class="">
     <!--header start-->
-    <header class="header white-bg">
+    <header ng-controller="HeaderController" class="header white-bg">
       <div class="sidebar-toggle-box">
       </div>
       <!--logo start-->
       <a href="index.html" class="logo" >Hack<span>Reactor</span></a>
       <!--logo end-->
-      <a href="http://hackreactor.com"> 
-          <img  style="position: fixed; top: 0; right: 0; border: 0;" 
-                src="http://i.imgur.com/x86kKmF.png" 
-                alt="Built at Hack Reactor"> 
-      </a>
+        
+        <div class="horizontal-menu navbar-collapse collapse ">
+            <ul class="nav navbar-nav">
+              <li><a href="#/drag">Dashboard</a></li>
+              <li><a href="" ng-click="renderCompanyModal()">Add Company</a></li>
+              <li><a href="unlink/asana" ng-click="logout()">Logout</a></li>
+            </ul>
+        </div>
+
       </div>
     </header>
     <!--header end-->
@@ -19,24 +23,39 @@
     <section id="main-content">
       <section class="wrapper site-min-height">
 
+      <!-- page start-->
+      <div box-listeners ng-repeat="status in data" statusId='{{status.headerId}}' statusName='{{status.header}}' statusOrder ='{{status.statusOrder}}'>
+        <div class="row-fluid" id="draggable_portlets">
+          <div class="col-md-2 column sortable">
+            <div class="panel panel-success">
+          <!-- BEGIN Portlet PORTLET-->
+              <div class="panel-heading"><div>{{status.header}}</div></div>
+              <div class="panel-body" id="companyContainer">
+                <div draggable-item 
+                  ng-click='renderModal(company)' 
+                  ng-repeat='company in status.subTasks' 
+                  class='dr-company' 
+                  statusOrder = '{{status.statusOrder}}'
+                  companyId='{{company.id}}'      companyName='{{company.name}}' 
+                  statusId='{{status.headerId}}'  statusName='{{status.header}}'>   {{company.name}}  
+                </div>
+              </div>
+            </div>
+          </div>
+            <!-- END Portlet PORTLET-->
+        </div>
+      </div>
+          <!-- page end-->
+    </section>
+    </section>
+  <!--     <footer class="site-footer">
         <div class="text-center">
-          <a href='/auth/asana'>
-            <img src='../../assets/asana-oauth-button-blue.png'></img>
+          2013 &copy; HackReactor
+          <a href="#" class="go-top">
+              <i class="fa fa-angle-up"></i>
           </a>
         </div>
-
-
-    </section>
-    </section>
-
-    <footer class="site-footer">
-      <div class="text-center">
-        2013 &copy; HackReactor
-        <a href="#" class="go-top">
-            <i class="fa fa-angle-up"></i>
-        </a>
-      </div>
-    </footer>
+      </footer> -->
       <!--footer end-->
   </section>
 
