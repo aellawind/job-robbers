@@ -33,6 +33,6 @@ module.exports = {
     return asanaMain.APIUrl + '/tasks/' + taskId
   },
 
-  hiringTeam          : 
+  // hiringTeam          : 
 
 };
