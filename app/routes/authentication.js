@@ -1,11 +1,13 @@
-var AsanaStrategy = require('passport-asana').Strategy;
-var config    = require('../../config/asanaKeys.js');
-var utils     = require('../utils/utils.js');
-var request   = require('request');
+var request         = require('request');
+var AsanaStrategy   = require('passport-asana').Strategy;
 
-var User      = require('../models/User.js');
+var config          = require('../../config/asanaKeys.js');
+var asana           = require('../utils/asanaApiRoutes.js');
+var utils           = require('../utils/utils.js');
 
-var Authentication = function (app, passport) {
+var User            = require('../models/User.js');
+
+var Authentication  = function (app, passport) {
 
   /* === PASSPORT CONFIGS === */
   passport.serializeUser(function(user, done) {
@@ -35,10 +37,31 @@ var Authentication = function (app, passport) {
     passport.authenticate('Asana'));
 
   app.get('/auth/asana/callback',
-    passport.authenticate('Asana', { failureRedirect: '/login' }),
+    passport.authenticate('Asana', { failureRedirect: '/#/404' }),
     function (req, res) {
-      console.log('Successfully logged in. Redirecting user.');
-      res.redirect('/#/home');
+      // console.log('Successfully logged in. Redirecting user.');
+      // res.redirect('/#/home');
+      var isHackReactorStudent = false;
+      var options     = {};
+      options.method  = 'GET';
+      options.url     = asana.projects();
+      options.headers = { 'Authorization' : 'Bearer ' + req.user.asana.token };
+      console.log(req.user);
+
+      request(options, function (err, response, projects) {
+        projects = JSON.parse(projects).data;
+        projects.forEach(function (project) {
+          if (project.name === req.user.asana.name) { isHackReactorStudent = true; }
+        }); 
+
+        isHackReactorStudent ? res.redirect('/#/home') : 
+          req.user.asana.token = undefined;
+          req.user.save(function (err, user) {
+            req.logout();
+            res.redirect('/#/404');       
+          });
+      });
+
     }
   );
 

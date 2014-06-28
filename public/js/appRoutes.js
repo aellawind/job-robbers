@@ -16,7 +16,12 @@ app.config(function ($stateProvider, $urlRouterProvider) {
     	url: '/student',
     	templateUrl: 'views/student.html',
     	controller: 'StudentController'
-    });
+    })
+
+    .state('404', {
+        url: '/404',
+        templateUrl: 'views/404.html'
+    })
 
     $urlRouterProvider.otherwise('/login');
 });
