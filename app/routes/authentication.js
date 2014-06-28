@@ -45,7 +45,8 @@ var Authentication  = function (app, passport) {
       var options     = {};
       options.method  = 'GET';
       options.url     = asana.projects();
-      options.headers = { 'Authentication' : 'Bearer ' + req.user.asana.token };
+      options.headers = { 'Authorization' : 'Bearer ' + req.user.asana.token };
+      console.log(req.user);
 
       request(options, function (err, response, projects) {
         projects = JSON.parse(projects).data;
@@ -55,7 +56,7 @@ var Authentication  = function (app, passport) {
 
         isHackReactorStudent ? res.redirect('/#/home') : 
           req.user.asana.token = undefined;
-          req.save(function (err, user) {
+          req.user.save(function (err, user) {
             req.logout();
             res.redirect('/#/404');       
           });
