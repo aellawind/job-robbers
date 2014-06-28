@@ -1,18 +1,22 @@
-app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+app.config(function ($stateProvider, $urlRouterProvider) {
 
-	$routeProvider
+  $stateProvider
+    .state('login', {
+      url:'/login',
+      templateUrl: 'views/login.html',
+    })
 
-	.when('/', {
-		templateUrl: 'views/login.html'
-	})
+    .state('drag', {
+    	url: '/drag',
+    	templateUrl: 'views/drag.html',
+    	controller: 'DragController'
+    })
 
-	.when('/home',{
-		templateUrl: 'views/home.html',
-		controller: 'HomeController'
-	})
+    .state('company', {
+    	url: '/student',
+    	templateUrl: 'views/student.html',
+    	controller: 'StudentController'
+    });
 
-  .otherwise({
-    redirectTo: '/'
-  });
-
-}]);
+    $urlRouterProvider.otherwise('/login');
+});
