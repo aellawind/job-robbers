@@ -6,16 +6,10 @@ app.config(function ($stateProvider, $urlRouterProvider) {
       templateUrl: 'views/login.html',
     })
 
-    .state('drag', {
-    	url: '/drag',
-    	templateUrl: 'views/drag.html',
-    	controller: 'DragController'
-    })
-
-    .state('company', {
-    	url: '/student',
-    	templateUrl: 'views/student.html',
-    	controller: 'StudentController'
+    .state('home', {
+    	url: '/home',
+    	templateUrl: 'views/home.html',
+    	controller: 'HomeController'
     })
 
     .state('404', {
