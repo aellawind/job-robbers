@@ -9,7 +9,6 @@
         
         <div class="horizontal-menu navbar-collapse collapse ">
             <ul class="nav navbar-nav">
-              <li><a href="#/drag">Dashboard</a></li>
               <li><a href="" ng-click="renderCompanyModal()">Add Company</a></li>
               <li><a href="unlink/asana" ng-click="logout()">Logout</a></li>
             </ul>
@@ -23,13 +22,20 @@
     <section id="main-content">
       <section class="wrapper site-min-height">
 
+
+      <div class='dr-instructions'>
+        <p>To add a note or comment to a company, click on the company name and fill out the input form.</p>
+
+        <p>To move a company to a different status, drag the company for its existing status to the new status.</p>
+      </div>
+
       <!-- page start-->
       <div box-listeners ng-repeat="status in data" statusId='{{status.headerId}}' statusName='{{status.header}}' statusOrder ='{{status.statusOrder}}'>
         <div class="row-fluid" id="draggable_portlets">
-          <div class="col-md-2 column sortable">
+          <div class="col-md-2 column sortable ">
             <div class="panel panel-success">
           <!-- BEGIN Portlet PORTLET-->
-              <div class="panel-heading"><div>{{status.header}}</div></div>
+              <div class="panel-heading dr-status-heading"><div>{{status.header}}</div></div>
               <div class="panel-body" id="companyContainer">
                 <div draggable-item 
                   ng-click='renderModal(company)' 
