@@ -1,13 +1,14 @@
 # Project Management Platform
-Produced at <a href='http://hackreactor.com'>Hack Reactor </a> by <a href='http://github.com/aellawind'>Amira Anuar</a>, <a href='http://github.com/elcinerkin'>Elçin Erkin</a> <a href="http://github.com/jimmytsao">Jimmy Tsao</a>& <a href='http://github.com/mamarildon'>Don Mamaril </a>
+Produced at <a href='http://hackreactor.com'>Hack Reactor </a> by <a href='http://github.com/aellawind'>Amira Anuar</a>, <a href='http://github.com/elcinerkin'>Elçin Erkin</a> <a href="http://github.com/jimmytsao">Jimmy Tsao</a> & <a href='http://github.com/mamarildon'>Don Mamaril </a>
 
 
 
 ## Tech Stack
-<img src="http://imgur.com/avGgwIN"/>
+<img src='http://i.imgur.com/avGgwIN.jpg'>
 
 ## Challenges
-* 
+
+
 ## Diving In
 ```
 $ git clone https://github.com/aellawind/job-robbers.git
