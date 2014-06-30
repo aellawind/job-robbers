@@ -20,7 +20,6 @@ app.controller('HomeController', function ($scope, $modal, Students, statusOrder
         return a.statusOrder - b.statusOrder;
       });
       $scope.data = data;
-      console.log($scope.data);
     });
 
   $scope.renderModal = function (task) {

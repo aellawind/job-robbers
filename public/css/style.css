@@ -27,6 +27,7 @@ body {
 .completeTask {
     /*width: 17px;*/
     height: 18px;
+
 }
 
 .addCommentBox {
@@ -2279,9 +2280,27 @@ ul.inbox-pagination li {
     background: #009da7;
 }
 
+.modal-header {
+  background-color: #dff0d8;
+  color: #3c763d;
+}
+
+.modal-name {
+  font-weight: bold;
+}
+
+.modal-comment{
+  font-weight: normal;
+}
+
 .modal-header h4.modal-title {
     font-weight: 300;
     font-family: 'Open Sans', sans-serif;
+}
+
+.modal-body{
+  max-height: 500px;
+  overflow: auto;
 }
 
 .modal-body label {
