@@ -4,7 +4,7 @@ Produced at <a href='http://hackreactor.com'>Hack Reactor </a> by <a href='http:
 
 
 ## Tech Stack
-<img src="http://i.imgur.com/avGgwIn"/>
+<img src="http://imgur.com/avGgwIN"/>
 
 ## Challenges
 * 
