@@ -53,14 +53,31 @@ body {
   float: left;
 }
 
+.dr-instructions {
+  display: table-cell;
+  vertical-align: middle;
+  width:100%;
+  font-size: 15px;
+  padding-left: 20px;
+}
+
+.dr-status-heading{
+  text-align: center;
+  font-size: 13px;
+  height: 5em;
+}
 .dr-status-title{
   color: red;
 }
 
 .dr-company{
-  border: 1px solid green;
-  margin: 4px;
-  color: black;
+  border: 1px solid #dff0d8;
+  border-radius: 2px;
+  background-color: white;
+  text-align: center;
+  margin: 1px;
+  color: #3c763d;
+  font-size: 12px;
 }
 
 .dr-drag{
@@ -78,8 +95,11 @@ body {
 }
 
 .panel-body{ 
-     height: 10em;
-     overflow: auto; /* content is not clipped */ 
+  background-color: white;
+  border: 1px solid white;
+  padding: 3px;
+  height: 15em;
+  overflow: auto; /* content is not clipped */ 
 }
 
 ul li {
@@ -2797,6 +2817,7 @@ ul.amounts li {
     background-color: #2A3542;
     border-color: #2A3542;
     color: #FFFFFF;
+    border-radius: 0px;
 }
 
 /*table*/
