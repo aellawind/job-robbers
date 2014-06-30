@@ -1,4 +1,4 @@
-# Project Management-Accelerated, Automated
+# Project Management Accelerated, Automated
 Produced at <a href='http://hackreactor.com'>Hack Reactor </a> by <a href='http://github.com/aellawind'>Amira Anuar</a>, <a href='http://github.com/elcinerkin'>Elçin Erkin</a> <a href="http://github.com/jimmytsao">Jimmy Tsao</a> & <a href='http://github.com/mamarildon'>Don Mamaril </a>
 
 Project managers can access a dashboard which provides a bird’s-eye view of all the projects in the portfolio and displays each project’s current status based on the algorithm calculations. The algorithm also suggests potential next steps to improve outcomes. This allows the project manager to quickly identify projects that require assistance and quickly take action.
