@@ -1,6 +1,8 @@
 # Project Management Accelerated, Automated
 Produced at <a href='http://hackreactor.com'>Hack Reactor </a> by <a href='http://github.com/aellawind'>Amira Anuar</a>, <a href='http://github.com/elcinerkin'>Elçin Erkin</a> <a href="http://github.com/jimmytsao">Jimmy Tsao</a> & <a href='http://github.com/mamarildon'>Don Mamaril </a>
 
+Our client was a technical project manager at Hack Reactor who was tracking dozens of individual projects using Asana as a CRM, and they approached us to build a tool to automate a lot of work and increase the productivity of their team members. 
+
 Project managers can access a dashboard which provides a bird’s-eye view of all the projects in the portfolio and displays each project’s current status based on the algorithm calculations. The algorithm also suggests potential next steps to improve outcomes. This allows the project manager to quickly identify projects that require assistance and quickly take action.
 
 Individual team members can use the application to view their specific project. Previously team members encountered significant friction and UX challenges in using Asana’s native interface as a project management tool. 
