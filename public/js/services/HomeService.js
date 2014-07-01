@@ -91,15 +91,27 @@ app.factory('checkValidDrop', function(statusOrder){
 });
 
 //Value used for defining the status Order of each status.
-app.value('statusOrder', {
-  'Graveyard': 1,
-  'Leads': 2,
-  'Applied': 3,
-  'Screen Conversation Scheduled': 4,
-  'Post Screen Conversation': 5,
-  'Pre-Onsite Tech Screen (phone/take home) Scheduled': 6,
-  'Post Tech Screen (Phone/take home)': 7,
-  'On-Site Scheduled': 8,
-  'Post On-Site': 9,
-  'Offers': 10}
+app.value('statusOrder', 
+// {
+//   'Graveyard': 1,
+//   'Leads': 2,
+//   'Applied': 3,
+//   'Screen Conversation Scheduled': 4,
+//   'Post Screen Conversation': 5,
+//   'Pre-Onsite Tech Screen (phone/take home) Scheduled': 6,
+//   'Post Tech Screen (Phone/take home)': 7,
+//   'On-Site Scheduled': 8,
+//   'Post On-Site': 9,
+//   'Offers': 10}
+{
+  'Stage 1': 1,
+  'Stage 2': 2,
+  'Stage 3': 3,
+  'Stage 4': 4,
+  'Stage 5': 5,
+  'Stage 6': 6,
+  'Stage 7': 7,
+  'Stage 8': 8,
+  'Stage 9': 9,
+  'Stage 10': 10}
 );
