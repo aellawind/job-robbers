@@ -1,4 +1,4 @@
-app.controller('CompanyModalController', function ($scope, Students, $route) {
+app.controller('CompanyModalController', function ($scope, Students) {
 
   $scope.addNewCompany = function (event, companyName, context) {
     if (event.which === 13) {

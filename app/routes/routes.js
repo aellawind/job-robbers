@@ -43,7 +43,7 @@ module.exports = function (app) {
     User.findOne({ _id: req.user._id }, function (err, user) {
       if (err) { throw err; }
 
-      var data = req.body
+      var data = req.body;
 
       var options = {};
       options.method  = 'POST';
@@ -62,7 +62,7 @@ module.exports = function (app) {
 
           /* ==== SET '$$' AS SECRET CODE FOR JOBCOP PARSER TO INTERPRET AS A SYSTEM MOVEMENT ==== */
           /* ==== Asana API currently does not support system comments when changes are made via their API ==== */
-          var text = '$$moved from ' + data.origin.name + ' to ' + data.dest.name;              
+          var text = '$$moved ' + data.company.name + ' from ' + data.origin.name + ' to ' + data.dest.name;
          
           var options2 = {};
           options2.method  = 'POST';

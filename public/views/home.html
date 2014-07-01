@@ -9,7 +9,7 @@
         
         <div class="horizontal-menu navbar-collapse collapse ">
             <ul class="nav navbar-nav">
-              <li><a href="" ng-click="renderCompanyModal()">Add Company</a></li>
+              <li><a href="" ng-click="renderCompanyModal()">Add Activity</a></li>
               <li><a href="unlink/asana" ng-click="logout()">Logout</a></li>
             </ul>
         </div>
@@ -24,16 +24,16 @@
 
 
       <div class='dr-instructions'>
-        <p>To add a note or comment to a company, click on the company name and fill out the input form.</p>
+        <p>To add a note or comment to an activity, click on the activity name and fill out the input form.</p>
 
-        <p>To move a company to a different status, drag the company for its existing status to the new status.</p>
+        <p>To move an activity to a different stage gate, drag the activity from its existing stage gate to the new stage gate.</p>
       </div>
 
       <!-- page start-->
       <div box-listeners ng-repeat="status in data" statusId='{{status.headerId}}' statusName='{{status.header}}' statusOrder ='{{status.statusOrder}}'>
         <div class="row-fluid" id="draggable_portlets">
           <div class="col-md-2 column sortable ">
-            <div class="panel panel-success">
+            <div class="panel panel-success dr-status">
           <!-- BEGIN Portlet PORTLET-->
               <div class="panel-heading dr-status-heading"><div>{{status.header}}</div></div>
               <div class="panel-body" id="companyContainer">
