@@ -32,7 +32,13 @@ module.exports = function (app) {
             if (currProject.notes.indexOf(user.asana.email) !== -1) {
               user.projectId = currProject.id
               user.save();
-              return true;
+              options.url = asanaAPI['user'](currProject.id);
+
+              request(options, function (err, response, tasks) {
+                if (!user.progress.length) { utils.saveProgress(JSON.parse(tasks).data, user); }
+                res.send(JSON.parse(tasks).data);
+              });
+
             } else {
                 i === projects.length-1 ? console.log('done') : recurse(projects, i+=1);
             }
