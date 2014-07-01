@@ -5,7 +5,6 @@ var User            = require('../models/User.js');
 var utils           = require('../utils/utils.js');
 var asanaAPI        = require('../utils/asanaApiRoutes.js');
 
-var alreadyCalled = false;
 module.exports = function (app) {
 
   /* ==== FETCH SPECIFIC USER & GRAB TASKS ==== */
