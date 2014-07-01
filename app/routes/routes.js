@@ -13,13 +13,14 @@ module.exports = function (app) {
     User.findOne({ _id: req.user._id }, function (err, user) {
       var options     = {};
       options.method  = 'GET';
-      options.url     = asanaAPI['projects']();
+      options.url     = asanaAPI['projects']() + '?opt_mobile=true';
       options.headers = {
         'Authorization' : 'Bearer ' + user.asana.token
       };
 
       request(options, function (err, response, projects) {
         projects = JSON.parse(projects).data;
+        // console.log(projects);
         projects.forEach(function (project) {
           /* ==== PULL CURRENT USER OUT OF HR WORKSPACE ==== */
           if (project.name === user.asana.name) {  

@@ -49,12 +49,14 @@ var Authentication  = function (app, passport) {
         user = JSON.parse(user).data;
         // iterate through user workspaces && match with hack reactor workspace
         // to identify that current user is a hack reactor student
-        for (var i = 0 ; i < user.workspaces.length ; i ++) {
-          if (user.workspaces[i].id === asana.workspaceId) {
+        // some is basically forEach but breaks loop when return value is true        
+        user.workspaces.some(function (workspace) {
+          console.log(workspace);
+          if (workspace.id === asana.workspaceId) {
             isHackReactorStudent = true;
-            break;
+            return true;
           }
-        }
+        })
         // without if/else you'll receive 'header has been sent' error
         // properly redirects user && if iompostor, logout user && redirect to 404
         if (isHackReactorStudent) { res.redirect('/#/home'); }
