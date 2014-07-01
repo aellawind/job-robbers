@@ -5,7 +5,6 @@ var User            = require('../models/User.js');
 var utils           = require('../utils/utils.js');
 var asanaAPI        = require('../utils/asanaApiRoutes.js');
 
-
 module.exports = function (app) {
 
   /* ==== FETCH SPECIFIC USER & GRAB TASKS ==== */
@@ -20,20 +19,30 @@ module.exports = function (app) {
 
       request(options, function (err, response, projects) {
         projects = JSON.parse(projects).data;
-        projects.forEach(function (project) {
 
-          /* ==== PULL CURRENT USER OUT OF HR WORKSPACE ==== */
-          if (project.name === user.asana.name) {  
-            user.projectId = project.id;
-            user.save();
-            options.url = asanaAPI['user'](project.id);
+        // recursively because it prevents asana error
+        var recurse = function (project, i) {
+          options.url = asanaAPI['project'](projects[i].id);
+          request(options, function (err, httpResponse, currProject) {
+            currProject = JSON.parse(currProject).data;
+            // check project notes for email
+            if (currProject.notes.indexOf(user.asana.email) !== -1) {
+              user.projectId = currProject.id
+              user.save();
+              options.url = asanaAPI['user'](currProject.id);
+              // get full project info and pass it to frontend
+              request(options, function (err, response, tasks) {
+                if (!user.progress.length) { utils.saveProgress(JSON.parse(tasks).data, user); }
+                res.send(JSON.parse(tasks).data);
+              });
 
-            request(options, function (err, response, tasks) {
-              if (!user.progress.length) { utils.saveProgress(JSON.parse(tasks).data, user); }
-              res.send(JSON.parse(tasks).data);
-            });
-          }
-        });        
+            } else { // recurse through each project 
+                i === projects.length-1 ? console.log('done') : recurse(projects, i+=1);
+            }
+          });
+        };
+        // iterate through each project
+        recurse(projects, 0);
       });
     });
   });

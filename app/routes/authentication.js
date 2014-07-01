@@ -39,22 +39,25 @@ var Authentication  = function (app, passport) {
   app.get('/auth/asana/callback',
     passport.authenticate('Asana', { failureRedirect: '/#/404' }),
     function (req, res) {
-      // console.log('Successfully logged in. Redirecting user.');
-      // res.redirect('/#/home');
       var isHackReactorStudent = false;
       var options     = {};
       options.method  = 'GET';
-      options.url     = asana.projects();
+      options.url     = asana.me();
       options.headers = { 'Authorization' : 'Bearer ' + req.user.asana.token };
-      console.log(req.user);
 
-      request(options, function (err, response, projects) {
-        projects = JSON.parse(projects).data;
-        projects.forEach(function (project) {
-          if (project.name === req.user.asana.name) { isHackReactorStudent = true; }
-        }); 
-
-       
+      request(options, function (err, httpResponse, user) {
+        user = JSON.parse(user).data;
+        // iterate through user workspaces && match with hack reactor workspace
+        // to identify that current user is a hack reactor student
+        // some is basically forEach but breaks loop when return value is true        
+        user.workspaces.some(function (workspace) {
+          if (workspace.id === asana.workspaceId) {
+            isHackReactorStudent = true;
+            return true;
+          }
+        })
+        // without if/else you'll receive 'header has been sent' error
+        // properly redirects user && if iompostor, logout user && redirect to 404
         if (isHackReactorStudent) { res.redirect('/#/home'); }
           else {
             req.user.asana.token = undefined;
@@ -64,7 +67,6 @@ var Authentication  = function (app, passport) {
             });            
           }
       });
-
     }
   );
 
