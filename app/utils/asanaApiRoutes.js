@@ -17,8 +17,12 @@ module.exports = {
     return asanaMain.APIUrl + '/projects/' + projectId + '/tasks?opt_mobile=true';
   },
 
+  project             : function (projectId) {
+    return asanaMain.APIUrl + '/projects/' + projectId;
+  },
+
   me                  : function () {
-    return asanaMain.APIUrl + '/users/me?opt_mobile=true';
+    return asanaMain.APIUrl + '/users/me';
   },
 
   addCompany          : function () {

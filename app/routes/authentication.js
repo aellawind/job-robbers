@@ -51,7 +51,6 @@ var Authentication  = function (app, passport) {
         // to identify that current user is a hack reactor student
         // some is basically forEach but breaks loop when return value is true        
         user.workspaces.some(function (workspace) {
-          console.log(workspace);
           if (workspace.id === asana.workspaceId) {
             isHackReactorStudent = true;
             return true;

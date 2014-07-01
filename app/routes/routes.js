@@ -5,7 +5,7 @@ var User            = require('../models/User.js');
 var utils           = require('../utils/utils.js');
 var asanaAPI        = require('../utils/asanaApiRoutes.js');
 
-
+var alreadyCalled = false;
 module.exports = function (app) {
 
   /* ==== FETCH SPECIFIC USER & GRAB TASKS ==== */
@@ -13,27 +13,33 @@ module.exports = function (app) {
     User.findOne({ _id: req.user._id }, function (err, user) {
       var options     = {};
       options.method  = 'GET';
-      options.url     = asanaAPI['projects']() + '?opt_mobile=true';
+      options.url     = asanaAPI['projects']();
       options.headers = {
         'Authorization' : 'Bearer ' + user.asana.token
       };
 
       request(options, function (err, response, projects) {
         projects = JSON.parse(projects).data;
-        // console.log(projects);
-        projects.forEach(function (project) {
-          /* ==== PULL CURRENT USER OUT OF HR WORKSPACE ==== */
-          if (project.name === user.asana.name) {  
-            user.projectId = project.id;
-            user.save();
-            options.url = asanaAPI['user'](project.id);
 
-            request(options, function (err, response, tasks) {
-              if (!user.progress.length) { utils.saveProgress(JSON.parse(tasks).data, user); }
-              res.send(JSON.parse(tasks).data);
-            });
-          }
-        });        
+        // recursively because it prevents asana error
+        // iterate through each project a user has && match notes to their e-mail address;
+        var recurse = function (project, i) {
+          options.url = asanaAPI['project'](projects[i].id);
+
+          request(options, function (err, httpResponse, currProject) {
+            currProject = JSON.parse(currProject).data;
+
+            if (currProject.notes.indexOf(user.asana.email) !== -1) {
+              user.projectId = currProject.id
+              user.save();
+              return true;
+            } else {
+                i === projects.length-1 ? console.log('done') : recurse(projects, i+=1);
+            }
+          });
+        };
+
+        recurse(projects, 0);
       });
     });
   });
