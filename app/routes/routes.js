@@ -21,7 +21,6 @@ module.exports = function (app) {
       request(options, function (err, response, projects) {
         projects = JSON.parse(projects).data;
         projects.forEach(function (project) {
-
           /* ==== PULL CURRENT USER OUT OF HR WORKSPACE ==== */
           if (project.name === user.asana.name) {  
             user.projectId = project.id;

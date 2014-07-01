@@ -1,6 +1,6 @@
 var asanaMain  = {
   'APIUrl'      : 'https://app.asana.com/api/1.0',
-  'workspaceId' : '1213745087037'
+  'workspaceId' : 1213745087037
 };
 
 module.exports = {
@@ -15,6 +15,10 @@ module.exports = {
 
   user                : function (projectId) {
     return asanaMain.APIUrl + '/projects/' + projectId + '/tasks?opt_mobile=true';
+  },
+
+  me                  : function () {
+    return asanaMain.APIUrl + '/users/me?opt_mobile=true';
   },
 
   addCompany          : function () {
@@ -33,6 +37,7 @@ module.exports = {
     return asanaMain.APIUrl + '/tasks/' + taskId
   },
 
+  workspaceId         : asanaMain.workspaceId
   // hiringTeam          : 
 
 };

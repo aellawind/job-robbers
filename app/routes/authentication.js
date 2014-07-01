@@ -39,22 +39,21 @@ var Authentication  = function (app, passport) {
   app.get('/auth/asana/callback',
     passport.authenticate('Asana', { failureRedirect: '/#/404' }),
     function (req, res) {
-      // console.log('Successfully logged in. Redirecting user.');
-      // res.redirect('/#/home');
       var isHackReactorStudent = false;
       var options     = {};
       options.method  = 'GET';
-      options.url     = asana.projects();
+      options.url     = asana.me();
       options.headers = { 'Authorization' : 'Bearer ' + req.user.asana.token };
-      console.log(req.user);
 
-      request(options, function (err, response, projects) {
-        projects = JSON.parse(projects).data;
-        projects.forEach(function (project) {
-          if (project.name === req.user.asana.name) { isHackReactorStudent = true; }
-        }); 
+      request(options, function (err, httpResponse, user) {
+        user = JSON.parse(user).data;
+        for (var i = 0 ; i < user.workspaces.length ; i ++) {
+          if (user.workspaces[i].id === asana.workspaceId) {
+            isHackReactorStudent = true;
+            break;
+          }
+        }
 
-       
         if (isHackReactorStudent) { res.redirect('/#/home'); }
           else {
             req.user.asana.token = undefined;
@@ -64,6 +63,26 @@ var Authentication  = function (app, passport) {
             });            
           }
       });
+      // request(options, function (err, response, projects) {
+      //   projects = JSON.parse(projects).data;
+      //   console.log('###############');
+      //   console.log(projects);
+      //   projects.forEach(function (project) {
+      //     console.log(project.name.indexOf(req.user.asana.name) , '###################################',)
+      //     if (project.name === req.user.asana.name || project.name.indexOf(req.user.asana.name) !== -1) { isHackReactorStudent = true; }
+      //     console.log(isHackReactorStudent, 'ihrs');
+      //   }); 
+
+       
+      //   if (isHackReactorStudent) { res.redirect('/#/home'); }
+      //     else {
+      //       req.user.asana.token = undefined;
+      //       req.user.save(function (err, user) {
+      //         req.logout();
+      //         res.redirect('/#/404');       
+      //       });            
+      //     }
+      // });
 
     }
   );
