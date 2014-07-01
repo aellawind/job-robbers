@@ -9,7 +9,16 @@ app.config(function ($stateProvider, $urlRouterProvider) {
     .state('home', {
     	url: '/home',
     	templateUrl: 'views/home.html',
-    	controller: 'HomeController'
+    	controller: 'HomeController',
+        resolve: {
+            delay: function($timeout, $q){
+                var prom = $q.defer();
+                $timeout(function(){
+                    prom.resolve();
+                }, 1000);
+                return prom.promise;
+            }
+        }
     })
 
     .state('404', {
