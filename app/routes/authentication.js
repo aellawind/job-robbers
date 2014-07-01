@@ -47,13 +47,16 @@ var Authentication  = function (app, passport) {
 
       request(options, function (err, httpResponse, user) {
         user = JSON.parse(user).data;
+        // iterate through user workspaces && match with hack reactor workspace
+        // to identify that current user is a hack reactor student
         for (var i = 0 ; i < user.workspaces.length ; i ++) {
           if (user.workspaces[i].id === asana.workspaceId) {
             isHackReactorStudent = true;
             break;
           }
         }
-
+        // without if/else you'll receive 'header has been sent' error
+        // properly redirects user && if iompostor, logout user && redirect to 404
         if (isHackReactorStudent) { res.redirect('/#/home'); }
           else {
             req.user.asana.token = undefined;
@@ -63,27 +66,6 @@ var Authentication  = function (app, passport) {
             });            
           }
       });
-      // request(options, function (err, response, projects) {
-      //   projects = JSON.parse(projects).data;
-      //   console.log('###############');
-      //   console.log(projects);
-      //   projects.forEach(function (project) {
-      //     console.log(project.name.indexOf(req.user.asana.name) , '###################################',)
-      //     if (project.name === req.user.asana.name || project.name.indexOf(req.user.asana.name) !== -1) { isHackReactorStudent = true; }
-      //     console.log(isHackReactorStudent, 'ihrs');
-      //   }); 
-
-       
-      //   if (isHackReactorStudent) { res.redirect('/#/home'); }
-      //     else {
-      //       req.user.asana.token = undefined;
-      //       req.user.save(function (err, user) {
-      //         req.logout();
-      //         res.redirect('/#/404');       
-      //       });            
-      //     }
-      // });
-
     }
   );
 
