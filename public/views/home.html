@@ -26,14 +26,14 @@
       <div class='dr-instructions'>
         <p>To add a note or comment to a company, click on the company name and fill out the input form.</p>
 
-        <p>To move a company to a different status, drag the company for its existing status to the new status.</p>
+        <p>To move a company to a different status, drag the company from its existing status to the new status.</p>
       </div>
 
       <!-- page start-->
       <div box-listeners ng-repeat="status in data" statusId='{{status.headerId}}' statusName='{{status.header}}' statusOrder ='{{status.statusOrder}}'>
         <div class="row-fluid" id="draggable_portlets">
           <div class="col-md-2 column sortable ">
-            <div class="panel panel-success">
+            <div class="panel panel-success dr-status">
           <!-- BEGIN Portlet PORTLET-->
               <div class="panel-heading dr-status-heading"><div>{{status.header}}</div></div>
               <div class="panel-body" id="companyContainer">
