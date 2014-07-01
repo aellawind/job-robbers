@@ -22,29 +22,27 @@ module.exports = function (app) {
         projects = JSON.parse(projects).data;
 
         // recursively because it prevents asana error
-        // iterate through each project a user has && match notes to their e-mail address;
         var recurse = function (project, i) {
           options.url = asanaAPI['project'](projects[i].id);
-
           request(options, function (err, httpResponse, currProject) {
             currProject = JSON.parse(currProject).data;
-
+            // check project notes for email
             if (currProject.notes.indexOf(user.asana.email) !== -1) {
               user.projectId = currProject.id
               user.save();
               options.url = asanaAPI['user'](currProject.id);
-
+              // get full project info and pass it to frontend
               request(options, function (err, response, tasks) {
                 if (!user.progress.length) { utils.saveProgress(JSON.parse(tasks).data, user); }
                 res.send(JSON.parse(tasks).data);
               });
 
-            } else {
+            } else { // recurse through each project 
                 i === projects.length-1 ? console.log('done') : recurse(projects, i+=1);
             }
           });
         };
-
+        // iterate through each project
         recurse(projects, 0);
       });
     });
