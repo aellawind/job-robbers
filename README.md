@@ -18,6 +18,8 @@ The app focuses the entire user experience on the parts of Asana related to Hack
 * Had to design a user interface from scratch (the client provided no wireframes or designs) that improved on the speed and productivity of native Asana
 * The lack of documentation for advanced querying through  the API also meant writing more complex calls to the API and extra parsing and curation of data. 
 * Making the end-to-end tests as thorough as possible
+* Slow API updates meant having to 'trick' the user interface to seem as if it has already updated.
+* Undo-functionality to prevent user data corruption
 
 
 ## Diving In
